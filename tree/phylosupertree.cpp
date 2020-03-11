@@ -23,6 +23,9 @@
 #include "main/phylotesting.h"
 #include "model/partitionmodel.h"
 #include "utils/MPIHelper.h"
+#include "utils/tools.h"
+#include <queue>
+#include <functional>
 
 PhyloSuperTree::PhyloSuperTree()
  : IQTree()
@@ -645,7 +648,7 @@ void PhyloSuperTree::computePartitionOrder() {
     int i, ntrees = size();
     part_order.resize(ntrees);
     part_order_by_nptn.resize(ntrees);
-#ifdef _OPENMP
+#if defined( _OPENMP ) || defined( _IQTREE_MPI )
     int *id = new int[ntrees];
     double *cost = new double[ntrees];
     
@@ -657,6 +660,10 @@ void PhyloSuperTree::computePartitionOrder() {
     quicksort(cost, 0, ntrees-1, id);
     for (i = 0; i < ntrees; i++) 
         part_order[i] = id[i];
+
+#ifdef _IQTREE_MPI
+    computeProcPartitionOrder(cost);
+#endif
         
     // compute part_order by number of patterns
     for (i = 0; i < ntrees; i++) {
@@ -683,8 +690,36 @@ void PhyloSuperTree::computePartitionOrder() {
         part_order[i] = i;
         part_order_by_nptn[i] = i;
     }
-#endif // OPENMP
+#endif // OPENMP and MPI
 }
+
+#ifdef _IQTREE_MPI
+void PhyloSuperTree::computeProcPartitionOrder(double *cost) {
+    int ntrees = size();
+    int nprocs = MPIHelper::getInstance().getNumProcesses();
+
+    vector<IntVector> proc_parts(nprocs);
+
+    if (MPIHelper::getInstance().isMaster()) {
+        priority_queue<DoubleIntPair, vector<DoubleIntPair>, less<DoubleIntPair>> pq;
+        for (int i = 0; i < nprocs; i ++) {
+            pq.push(make_pair(0.0, i));
+        }
+
+        for (int i = 0; i < ntrees; i ++) {
+            double proc_cost = pq.top().first;
+            int proc_id = pq.top().second;
+            pq.pop();
+
+            proc_parts[proc_id].push_back(part_order[i]);
+            proc_cost += cost[i];
+
+            pq.push(make_pair(proc_cost, proc_id));
+        }
+    }
+    proc_part_order = MPIHelper::getInstance().getProcVector(proc_parts);
+}
+#endif
 
 double PhyloSuperTree::computeLikelihood(double *pattern_lh) {
 	double tree_lh = 0.0;

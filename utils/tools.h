@@ -36,6 +36,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <sstream>
+#include <utility>
 
 //#include <sys/time.h>
 //#include <time.h>
@@ -204,6 +205,8 @@ private:
 
     double m_a, m_b, m_coeff;
 };
+
+typedef pair<double, int> DoubleIntPair;
 
 /**
         vector of double number
