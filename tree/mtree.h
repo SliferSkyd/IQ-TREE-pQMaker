@@ -200,6 +200,13 @@ public:
     virtual void printTree(ostream & out, int brtype = WT_BR_LEN);
 
     /**
+     print the tree to the output file in NEXUS format
+     @param outfile the output file.
+     @param brtype type of branch to print
+     */
+    void printNexus(string outfile, int brtype = WT_BR_LEN, string nexus_comment = "");
+
+    /**
      *  internal function called by printTree to print branch length
      *  @param out output stream
      *  @param length_nei target Neighbor to print
@@ -432,6 +439,14 @@ public:
             @param[out] taxname taxa name, with size equal leafNum and ordered with taxon ID
      */
     void getTaxaName(vector<string> &taxname, Node *node = NULL, Node *dad = NULL);
+
+    /**
+            get the descending node names below the node
+            @param node the starting node, NULL to start from the root
+            @param dad dad of the node, used to direct the search
+            @param[out] nodename node names, with size equal leafNum and ordered with taxon ID
+     */
+    void getNodeName(set<string> &nodename, Node *node = NULL, Node *dad = NULL);
 
     /**
             get the descending taxa names below the node. different from getTaxaName() in that the
