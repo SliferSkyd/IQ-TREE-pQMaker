@@ -55,7 +55,6 @@ double RateKategory::targetFunk(double x[])
 
 double RateKategory::optimizeParameters(double gradient_epsilon)
 {
-	printf("Kategory\n");
 	int ndim = getNDim();
 	
 	// return if nothing to be optimized
