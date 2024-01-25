@@ -616,7 +616,7 @@ void SuperAlignment::slitPartitionDir(string partition_dir, char *sequence_type,
     string dir_split = dir + "split/";
     mkdir(dir_split.c_str(), 0777);
     for (int part = 0; part < partitions.size(); part++) {
-        int upper_bound = average_cost / partitions[part]->getNPattern() / partitions[part]->getNStates();
+        int upper_bound = average_cost / partitions[part]->getNSeq() / partitions[part]->getNStates();
         upper_bound = max(upper_bound, 5);
         cout << "Splitting partition " << partitions[part]->name << "..." << endl;
         vector<Alignment*> split_partitions = partitions[part]->splitByUpperBound(upper_bound);

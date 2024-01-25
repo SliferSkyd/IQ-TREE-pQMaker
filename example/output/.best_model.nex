@@ -16,15 +16,15 @@ begin sets;
   charset NSP6_14_0.phy = ../example/test/split/NSP6_14_0.phy: ;
   charset NSP6_15_0.phy = ../example/test/split/NSP6_15_0.phy: ;
   charpartition mymodels =
-    HIVb+G4{0.406031}: NSP6_01_0.phy{0.332305},
-    HIVb+G4{1.24115}: NSP6_02_0.phy{2.25178},
-    HIVb: NSP6_03_0.phy{0.269949},
+    HIVb+G4{0.406014}: NSP6_01_0.phy{0.332328},
+    HIVb+G4{1.24162}: NSP6_02_0.phy{2.25166},
+    HIVb: NSP6_03_0.phy{0.26995},
     HIVb: NSP6_04_0.phy{0.112091},
     HIVb: NSP6_05_0.phy{0.304838},
-    HIVb+I{0.801179}: NSP6_06_0.phy{0.193016},
+    HIVb+I{0.801172}: NSP6_06_0.phy{0.193026},
     HIVb: NSP6_07_0.phy{0.127877},
-    HIVb: NSP6_08_0.phy{0.18345},
-    HIVb: NSP6_09_0.phy{0.239727},
+    HIVb: NSP6_08_0.phy{0.183451},
+    HIVb: NSP6_09_0.phy{0.239726},
     HIVb: NSP6_10_0.phy{0.149825},
     HIVb: NSP6_11_0.phy{0.149596},
     HIVb+I{0.956872}: NSP6_12_0.phy{0.0687636},

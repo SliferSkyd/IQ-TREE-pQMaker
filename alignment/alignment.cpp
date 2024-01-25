@@ -2642,14 +2642,13 @@ int Alignment::buildRetainingSites(const char *aln_site_list, IntVector &kept_si
 
 vector<Alignment*> Alignment::splitByUpperBound(int upper_bound) {
     vector<Alignment*> ret;
-
-    int n = getNSeq();
-    vector<int> perm(n);
-    for (int i = 0; i < n; i++) perm[i] = i;
-    random_shuffle(perm.begin(), perm.end());
-    for (int i = 0, sub_alignment_id = 0; i < n; ) {
+    
+    int m = getNPattern();
+    vector<int> freqs;
+    getPatternFreq(freqs);
+    for (int i = 0, sub_aln_id = 0; i < m; ) {
+        int len = min(upper_bound, m - i);
         Alignment *aln = new Alignment();
-
         auto subName = [&](string file_name, int id_sub) {
             for (int i = file_name.size() - 1; i >= 0; --i) {
                 if (file_name[i] == '.') {
@@ -2658,21 +2657,17 @@ vector<Alignment*> Alignment::splitByUpperBound(int upper_bound) {
             }
             return file_name;
         };
-
-        aln->name = subName(name, sub_alignment_id++);
-        int len = min(upper_bound, n-i);
-        aln->seq_names.resize(len);
+        aln->name = subName(name, sub_aln_id);
+        aln->seq_names = seq_names;
         aln->seq_type = seq_type;
         aln->num_states = num_states;
         aln->STATE_UNKNOWN = STATE_UNKNOWN;
-        aln->site_pattern = site_pattern;
-        aln->resize(getNSite());
-        for (int j = 0; j < getNSite(); ++j) 
-            aln->at(j).resize(len);
+        
         for (int j = 0; j < len; ++j, ++i) {
-            aln->seq_names[j] = seq_names[perm[i]];
-            for (int k = 0; k < this->size(); ++k) 
-                aln->at(k)[j] = at(k)[perm[i]];
+            for (int k = 0; k < freqs[i]; ++k) {
+                aln->site_pattern.push_back(j);
+            }
+            aln->push_back(at(i));
         }
         ret.push_back(aln);
     }
