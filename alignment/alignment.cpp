@@ -2642,12 +2642,20 @@ int Alignment::buildRetainingSites(const char *aln_site_list, IntVector &kept_si
 
 vector<Alignment*> Alignment::splitByUpperBound(int upper_bound) {
     vector<Alignment*> ret;
-    
+
     int m = getNPattern();
+    if (m <= upper_bound) {
+        ret.push_back(this);
+        return ret;
+    }
     vector<int> freqs;
     getPatternFreq(freqs);
-    for (int i = 0, sub_aln_id = 0; i < m; ) {
-        int len = min(upper_bound, m - i);
+
+    vector<int> perm(m);
+    for (int i = 0; i < m; ++i) perm[i] = i;
+    random_shuffle(perm.begin(), perm.end());
+
+    auto buildAlnFromPatterns = [&](int aln_id, vector<int> patterns) {
         Alignment *aln = new Alignment();
         auto subName = [&](string file_name, int id_sub) {
             for (int i = file_name.size() - 1; i >= 0; --i) {
@@ -2657,19 +2665,28 @@ vector<Alignment*> Alignment::splitByUpperBound(int upper_bound) {
             }
             return file_name;
         };
-        aln->name = subName(name, sub_aln_id);
+        aln->name = subName(name, aln_id);
         aln->seq_names = seq_names;
         aln->seq_type = seq_type;
         aln->num_states = num_states;
         aln->STATE_UNKNOWN = STATE_UNKNOWN;
         
-        for (int j = 0; j < len; ++j, ++i) {
+        for (int j = 0; j < patterns.size(); ++j) {
+            int i = patterns[j];
             for (int k = 0; k < freqs[i]; ++k) {
                 aln->site_pattern.push_back(j);
             }
             aln->push_back(at(i));
         }
         ret.push_back(aln);
+    };
+
+    int num_aln = m / upper_bound;
+    vector<vector<int>> patterns(m);
+    for (int i = 0; i < m; ++i) 
+        patterns[perm[i] % num_aln].push_back(perm[i]);
+    for (int i = 0; i < num_aln; ++i) {
+        buildAlnFromPatterns(i, patterns[i]);
     }
     return ret;
 }
