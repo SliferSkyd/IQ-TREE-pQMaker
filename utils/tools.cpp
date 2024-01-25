@@ -3804,6 +3804,20 @@ void parseArg(int argc, char *argv[], Params &params) {
                 }
 				continue;
 			}
+
+            if (strcmp(argv[cnt], "-np") == 0) {
+				cnt++;
+				if (cnt >= argc)
+				throw "Use -np <num_processors|AUTO>";
+                if (iEquals(argv[cnt], "AUTO"))
+                    params.num_processors = 0;
+                else {
+                    params.num_processors = convert_int(argv[cnt]);
+                    if (params.num_processors < 1)
+                        throw "At least 1 processor please";
+                }
+				continue;
+			}
             
             if (strcmp(argv[cnt], "-ntmax") == 0 || strcmp(argv[cnt], "--threads-max") == 0) {
                 cnt++;

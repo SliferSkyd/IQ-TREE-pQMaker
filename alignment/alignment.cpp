@@ -571,7 +571,6 @@ int Alignment::readNexus(char *filename) {
     trees_block = new TreesBlock(taxa_block);
 
     MyReader nexus(filename);
-
     nexus.Add(taxa_block);
     nexus.Add(assumptions_block);
     nexus.Add(data_block);
@@ -2639,6 +2638,45 @@ int Alignment::buildRetainingSites(const char *aln_site_list, IntVector &kept_si
     for (j = 0; j < kept_sites.size(); j++)
         if (kept_sites[j]) final_length++;
     return final_length;
+}
+
+vector<Alignment*> Alignment::splitByUpperBound(int upper_bound) {
+    vector<Alignment*> ret;
+
+    int n = getNSeq();
+    vector<int> perm(n);
+    for (int i = 0; i < n; i++) perm[i] = i;
+    random_shuffle(perm.begin(), perm.end());
+    for (int i = 0, sub_alignment_id = 0; i < n; ) {
+        Alignment *aln = new Alignment();
+
+        auto subName = [&](string file_name, int id_sub) {
+            for (int i = file_name.size() - 1; i >= 0; --i) {
+                if (file_name[i] == '.') {
+                    file_name = file_name.substr(0, i) + "_" + convertIntToString(id_sub) + file_name.substr(i);
+                }
+            }
+            return file_name;
+        };
+
+        aln->name = subName(name, sub_alignment_id++);
+        int len = min(upper_bound, n-i);
+        aln->seq_names.resize(len);
+        aln->seq_type = seq_type;
+        aln->num_states = num_states;
+        aln->STATE_UNKNOWN = STATE_UNKNOWN;
+        aln->site_pattern = site_pattern;
+        aln->resize(getNSite());
+        for (int j = 0; j < getNSite(); ++j) 
+            aln->at(j).resize(len);
+        for (int j = 0; j < len; ++j, ++i) {
+            aln->seq_names[j] = seq_names[perm[i]];
+            for (int k = 0; k < this->size(); ++k) 
+                aln->at(k)[j] = at(k)[perm[i]];
+        }
+        ret.push_back(aln);
+    }
+    return ret;
 }
 
 void Alignment::printPhylip(ostream &out, bool append, const char *aln_site_list,

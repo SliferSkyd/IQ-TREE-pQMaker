@@ -1,0 +1,34 @@
+#nexus
+begin sets;
+  charset NSP6_01_0.phy = ../example/test/splitted/NSP6_01_0.phy: ;
+  charset NSP6_02_0.phy = ../example/test/splitted/NSP6_02_0.phy: ;
+  charset NSP6_03_0.phy = ../example/test/splitted/NSP6_03_0.phy: ;
+  charset NSP6_04_0.phy = ../example/test/splitted/NSP6_04_0.phy: ;
+  charset NSP6_05_0.phy = ../example/test/splitted/NSP6_05_0.phy: ;
+  charset NSP6_06_0.phy = ../example/test/splitted/NSP6_06_0.phy: ;
+  charset NSP6_07_0.phy = ../example/test/splitted/NSP6_07_0.phy: ;
+  charset NSP6_08_0.phy = ../example/test/splitted/NSP6_08_0.phy: ;
+  charset NSP6_09_0.phy = ../example/test/splitted/NSP6_09_0.phy: ;
+  charset NSP6_10_0.phy = ../example/test/splitted/NSP6_10_0.phy: ;
+  charset NSP6_11_0.phy = ../example/test/splitted/NSP6_11_0.phy: ;
+  charset NSP6_12_0.phy = ../example/test/splitted/NSP6_12_0.phy: ;
+  charset NSP6_13_0.phy = ../example/test/splitted/NSP6_13_0.phy: ;
+  charset NSP6_14_0.phy = ../example/test/splitted/NSP6_14_0.phy: ;
+  charset NSP6_15_0.phy = ../example/test/splitted/NSP6_15_0.phy: ;
+  charpartition mymodels =
+    HIVb+I: NSP6_01_0.phy,
+    HIVb+G4: NSP6_02_0.phy,
+    HIVb: NSP6_03_0.phy,
+    HIVb: NSP6_04_0.phy,
+    HIVb: NSP6_05_0.phy,
+    HIVb+I: NSP6_06_0.phy,
+    HIVb: NSP6_07_0.phy,
+    HIVb: NSP6_08_0.phy,
+    HIVb: NSP6_09_0.phy,
+    HIVb: NSP6_10_0.phy,
+    HIVb: NSP6_11_0.phy,
+    HIVb+I: NSP6_12_0.phy,
+    HIVb+I: NSP6_13_0.phy,
+    HIVb: NSP6_14_0.phy,
+    HIVb: NSP6_15_0.phy;
+end;

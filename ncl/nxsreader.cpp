@@ -245,14 +245,14 @@ void NxsReader::Execute(
 	NxsString errormsg;
 
 	try
-		{
+	{
 		token.GetNextToken();
-		}
+	}
 	catch (NxsException x)
-		{
+	{
 		NexusError(token.errormsg, 0, 0, 0);
 		return;
-		}
+	}
 
 	if (!token.Equals("#NEXUS"))
 		{
@@ -303,6 +303,7 @@ void NxsReader::Execute(
 							try 
 								{
 								currBlock->Read(token);
+								
 								currBlock = tempBlock;
 								}
 
@@ -341,7 +342,7 @@ void NxsReader::Execute(
 					{
                     token.SetLabileFlagBit(token.hyphenNotPunctuation);
 					token.GetNextToken();
-
+					token.Writeln(std::cout);
 					if (token.Equals("END") || token.Equals("ENDBLOCK")) 
 						{
 						token.GetNextToken();
@@ -388,6 +389,7 @@ void NxsReader::Execute(
 		ExecuteStopping();
 
 	currBlock = NULL;
+	// exit(-1);
 	}
 
 /*----------------------------------------------------------------------------------------------------------------------

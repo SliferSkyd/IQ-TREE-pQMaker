@@ -138,6 +138,7 @@ void RateHeterotachy::writeParameters(ostream &out) {
     @return the best likelihood
 */
 double RateHeterotachy::optimizeParameters(double gradient_epsilon) {
+    printf("Hetoratachy\n");
     if (fix_params)
         return phylo_tree->computeLikelihood();
 	if (verbose_mode >= VB_MED)

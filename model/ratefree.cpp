@@ -231,7 +231,6 @@ double RateFree::targetFunk(double x[]) {
 	@return the best likelihood
 */
 double RateFree::optimizeParameters(double gradient_epsilon) {
-
 	int ndim = getNDim();
 
 	// return if nothing to be optimized

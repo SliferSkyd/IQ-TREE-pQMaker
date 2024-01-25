@@ -2704,7 +2704,7 @@ double PhyloTree::optimizeAllBranches(int my_iterations, double tolerance, int m
         cout << "Optimizing branch lengths (max " << my_iterations << " loops)..." << endl;
     
     NodeVector nodes, nodes2;
-    computeBestTraversal(nodes, nodes2);
+    computeBestTraversal(nodes, nodes2); // O(n)
     
     double tree_lh = computeLikelihoodBranch((PhyloNeighbor*)nodes[0]->findNeighbor(nodes2[0]), (PhyloNode*)nodes[0]);
     

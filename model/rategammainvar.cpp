@@ -126,9 +126,7 @@ void RateGammaInvar::setBounds(double *lower_bound, double *upper_bound, bool *b
 }
 
 double RateGammaInvar::optimizeParameters(double gradient_epsilon) {
-
 	int ndim = getNDim();
-
 	// return if nothing to be optimized
 	if (ndim == 0)
 		return phylo_tree->computeLikelihood();

@@ -1,0 +1,756 @@
+IQ-TREE MPI multicore version 2.0.6 for Linux 64-bit built Jan 24 2024
+Developed by Bui Quang Minh, Nguyen Lam Tung, Olga Chernomor,
+Heiko Schmidt, Dominik Schrempf, Michael Woodhams.
+
+Host:    TURING (AVX2, FMA3, 6 GB RAM)
+Command: ./iqtree2-mpi -S ../example/test -nt 1 -pre ../example/output/ -redo -np 4
+Seed:    289873 (Using SPRNG - Scalable Parallel Random Number Generator)
+Time:    Thu Jan 25 15:03:23 2024
+Kernel:  AVX+FMA - 1 threads (16 CPU cores detected)
+MPI:     1 processes
+
+HINT: Use -nt option to specify number of threads because your CPU has 16 cores!
+HINT: -nt AUTO will automatically determine the best number of threads to use.
+
+Reading 15 alignment files in directory ../example/test
+Reading alignment file ../example/test/NSP6_01.phy ... Phylip format detected
+Alignment most likely contains protein sequences
+WARNING: 6 sites contain only gaps or ambiguous characters.
+Alignment has 16 sequences with 98 columns, 41 distinct patterns
+14 parsimony-informative, 7 singleton sites, 77 constant sites
+          Gap/Ambiguity  Composition  p-value
+   1  AMK49250    6.12%    passed    100.00%
+   2  AHV80034    6.12%    passed    100.00%
+   3  AAK15266    6.12%    passed    100.00%
+   4  AFK09588    6.12%    passed    100.00%
+   5  AIC34766    6.12%    passed    100.00%
+   6  AFC90180    6.12%    passed    100.00%
+   7  AHZ32592    6.12%    passed    100.00%
+   8  AHZ91362    6.12%    passed    100.00%
+   9  AUT30282    6.12%    passed    100.00%
+  10  AHZ91527    6.12%    passed    100.00%
+  11  AKA40616    6.12%    passed    100.00%
+  12  AHZ33310    6.12%    passed    100.00%
+  13  ANN82459    6.12%    passed    100.00%
+  14  AHZ91231    6.12%    passed    100.00%
+  15  AIN41102    6.12%    passed    100.00%
+  16  AHZ91455    6.12%    passed    100.00%
+****  TOTAL       6.12%  0 sequences failed composition chi2 test (p-value<5%; df=19)
+Reading alignment file ../example/test/NSP6_02.phy ... Phylip format detected
+Alignment most likely contains protein sequences
+Alignment has 16 sequences with 98 columns, 89 distinct patterns
+62 parsimony-informative, 5 singleton sites, 31 constant sites
+          Gap/Ambiguity  Composition  p-value
+   1  ALG35679    2.04%    passed     57.03%
+   2  AMD39983    2.04%    passed     97.40%
+   3  ACC91684    2.04%    passed     82.61%
+   4  ACC91686    2.04%    passed     84.18%
+   5  AGS43839   10.20%    passed     99.42%
+   6  AGS43851   10.20%    passed     99.83%
+   7  AGS43816   10.20%    passed     99.89%
+   8  ART66879   10.20%    passed     99.85%
+   9  AGF86372    0.00%    passed    100.00%
+  10  AMK49270    0.00%    passed    100.00%
+  11  ADE80940    0.00%    passed    100.00%
+  12  AKA40566    0.00%    passed     99.98%
+  13  AFR23361    6.12%    passed     99.64%
+  14  AAA57460    6.12%    passed     99.70%
+  15  AGB51107    6.12%    passed     99.91%
+  16  ABV53307   74.49%    passed     82.21%
+WARNING: 1 sequences contain more than 50% gaps/ambiguity
+****  TOTAL       8.86%  0 sequences failed composition chi2 test (p-value<5%; df=19)
+Reading alignment file ../example/test/NSP6_03.phy ... Phylip format detected
+Alignment most likely contains protein sequences
+Alignment has 15 sequences with 98 columns, 39 distinct patterns
+11 parsimony-informative, 9 singleton sites, 78 constant sites
+          Gap/Ambiguity  Composition  p-value
+   1  AEV53335    0.00%    passed    100.00%
+   2  AGF86122    2.04%    passed    100.00%
+   3  AIC81014    2.04%    passed    100.00%
+   4  AGF86233    4.08%    passed    100.00%
+   5  AGF85913    3.06%    passed    100.00%
+   6  AIC81004    2.04%    passed    100.00%
+   7  AGF86223    2.04%    passed    100.00%
+   8  AGF86050    2.04%    passed    100.00%
+   9  AGF85895    2.04%    passed    100.00%
+  10  AGF86086    2.04%    passed    100.00%
+  11  AKA40125    0.00%    passed     99.84%
+  12  AFZ75595    0.00%    passed     99.99%
+  13  AHZ32849    2.04%    passed    100.00%
+  14  ATI14969    0.00%    passed    100.00%
+  15  AQQ13088    0.00%    passed    100.00%
+****  TOTAL       1.56%  0 sequences failed composition chi2 test (p-value<5%; df=19)
+Reading alignment file ../example/test/NSP6_04.phy ... Phylip format detected
+Alignment most likely contains protein sequences
+Alignment has 7 sequences with 98 columns, 29 distinct patterns
+1 parsimony-informative, 9 singleton sites, 88 constant sites
+          Gap/Ambiguity  Composition  p-value
+   1  AMR44591    0.00%    passed    100.00%
+   2  ABV53243    0.00%    passed    100.00%
+   3  BBB33722    0.00%    passed    100.00%
+   4  ACH72468    0.00%    passed    100.00%
+   5  AAG15312    0.00%    passed    100.00%
+   6  AGE47065    0.00%    passed    100.00%
+   7  ASE03986    0.00%    passed    100.00%
+****  TOTAL       0.00%  0 sequences failed composition chi2 test (p-value<5%; df=18)
+Reading alignment file ../example/test/NSP6_05.phy ... Phylip format detected
+Alignment most likely contains protein sequences
+WARNING: 6 sites contain only gaps or ambiguous characters.
+Alignment has 16 sequences with 98 columns, 43 distinct patterns
+17 parsimony-informative, 5 singleton sites, 76 constant sites
+          Gap/Ambiguity  Composition  p-value
+   1  AGE47053    6.12%    passed    100.00%
+   2  AGE46969    6.12%    passed    100.00%
+   3  ANN82381    6.12%    passed    100.00%
+   4  ANN82330    6.12%    passed    100.00%
+   5  AHV80229    6.12%    passed    100.00%
+   6  AHZ32351    6.12%    passed    100.00%
+   7  AKA40137    6.12%    passed    100.00%
+   8  ANN82429    6.12%    passed    100.00%
+   9  AGV31735    6.12%    passed    100.00%
+  10  AHZ91033    6.12%    passed    100.00%
+  11  AEK64397    6.12%    passed    100.00%
+  12  ACU87647    6.12%    passed     71.98%
+  13  AHZ32996    6.12%    passed    100.00%
+  14  ALQ77222    6.12%    passed    100.00%
+  15  ALQ77330    6.12%    passed    100.00%
+  16  AFJ68324    7.14%    passed    100.00%
+****  TOTAL       6.19%  0 sequences failed composition chi2 test (p-value<5%; df=19)
+Reading alignment file ../example/test/NSP6_06.phy ... Phylip format detected
+Alignment most likely contains protein sequences
+WARNING: 6 sites contain only gaps or ambiguous characters.
+Alignment has 14 sequences with 98 columns, 31 distinct patterns
+7 parsimony-informative, 4 singleton sites, 87 constant sites
+          Gap/Ambiguity  Composition  p-value
+   1  AGE47077    6.12%    passed    100.00%
+   2  AEG25333    6.12%    passed    100.00%
+   3  AKA40162    6.12%    passed    100.00%
+   4  AHZ91647    6.12%    passed    100.00%
+   5  AGV31519    6.12%    passed    100.00%
+   6  AKA40149    6.12%    passed    100.00%
+   7  AHZ32960    6.12%    passed    100.00%
+   8  AKA40367    6.12%    passed    100.00%
+   9  AHZ33056    6.12%    passed    100.00%
+  10  AHZ91599    6.12%    passed    100.00%
+  11  AGE10419    6.12%    passed    100.00%
+  12  AHV80512    6.12%    passed     86.89%
+  13  BAN82685    6.12%    passed    100.00%
+  14  AGE47532    6.12%    passed    100.00%
+****  TOTAL       6.12%  0 sequences failed composition chi2 test (p-value<5%; df=19)
+Reading alignment file ../example/test/NSP6_07.phy ... Phylip format detected
+Alignment most likely contains protein sequences
+WARNING: 6 sites contain only gaps or ambiguous characters.
+Alignment has 12 sequences with 98 columns, 29 distinct patterns
+1 parsimony-informative, 9 singleton sites, 88 constant sites
+          Gap/Ambiguity  Composition  p-value
+   1  AGE47161    6.12%    passed    100.00%
+   2  AGE47388    6.12%    passed    100.00%
+   3  AGE47125    6.12%    passed    100.00%
+   4  AIW47359    6.12%    passed     94.50%
+   5  AHZ33457    6.12%    passed    100.00%
+   6  AGE45369    6.12%    passed    100.00%
+   7  AGE47005    6.12%    passed    100.00%
+   8  AHZ91559    6.12%    passed    100.00%
+   9  AHZ33020    6.12%    passed    100.00%
+  10  AQX77833    6.12%    passed    100.00%
+  11  AGE10442    6.12%    passed    100.00%
+  12  AQX77839    6.12%    passed    100.00%
+****  TOTAL       6.12%  0 sequences failed composition chi2 test (p-value<5%; df=19)
+Reading alignment file ../example/test/NSP6_08.phy ... Phylip format detected
+Alignment most likely contains protein sequences
+WARNING: 6 sites contain only gaps or ambiguous characters.
+Alignment has 14 sequences with 98 columns, 47 distinct patterns
+3 parsimony-informative, 12 singleton sites, 83 constant sites
+          Gap/Ambiguity  Composition  p-value
+   1  BBA19136    6.12%    passed    100.00%
+   2  ABV53267    6.12%    passed    100.00%
+   3  AHV80193    6.12%    passed    100.00%
+   4  AGE99311    6.12%    passed    100.00%
+   5  AEB79563    6.12%    passed    100.00%
+   6  AEB79501    6.12%    passed    100.00%
+   7  AGE98884    6.12%    passed    100.00%
+   8  AGB06157    6.12%    passed    100.00%
+   9  AHV80010    6.12%    passed    100.00%
+  10  AGE98704    6.12%    passed    100.00%
+  11  AFR77816    6.12%    passed    100.00%
+  12  AGE98507    6.12%    passed    100.00%
+  13  AGE99027    6.12%    passed    100.00%
+  14  ABV53251   62.24%    passed     96.56%
+WARNING: 1 sequences contain more than 50% gaps/ambiguity
+****  TOTAL      10.13%  0 sequences failed composition chi2 test (p-value<5%; df=19)
+Reading alignment file ../example/test/NSP6_09.phy ... Phylip format detected
+Alignment most likely contains protein sequences
+WARNING: 6 sites contain only gaps or ambiguous characters.
+Alignment has 16 sequences with 98 columns, 37 distinct patterns
+8 parsimony-informative, 9 singleton sites, 81 constant sites
+          Gap/Ambiguity  Composition  p-value
+   1  AAX13490    6.12%    passed    100.00%
+   2  AQQ80629    6.12%    passed    100.00%
+   3  ADB97221    6.12%    passed    100.00%
+   4  AIA81306    6.12%    passed    100.00%
+   5  AIA81283    6.12%    passed    100.00%
+   6  ANN82454    6.12%    passed    100.00%
+   7  AKE33201    6.12%    passed    100.00%
+   8  AHW80451    6.12%    passed    100.00%
+   9  ANN82474    6.12%    passed    100.00%
+  10  AKE33212    6.12%    passed    100.00%
+  11  AKA40832    6.12%    passed    100.00%
+  12  AGD80561    6.12%    passed    100.00%
+  13  AEL20305    6.12%    passed    100.00%
+  14  ANN82449    6.12%    passed    100.00%
+  15  AFM74240    6.12%    passed    100.00%
+  16  AEL20311    6.12%    passed    100.00%
+****  TOTAL       6.12%  0 sequences failed composition chi2 test (p-value<5%; df=19)
+Reading alignment file ../example/test/NSP6_10.phy ... Phylip format detected
+Alignment most likely contains protein sequences
+WARNING: 6 sites contain only gaps or ambiguous characters.
+Alignment has 15 sequences with 98 columns, 44 distinct patterns
+5 parsimony-informative, 6 singleton sites, 87 constant sites
+          Gap/Ambiguity  Composition  p-value
+   1  AHZ33250    6.12%    passed    100.00%
+   2  AHZ32776    6.12%    passed    100.00%
+   3  AEK64403    6.12%    passed    100.00%
+   4  AGE98731    6.12%    passed    100.00%
+   5  AHZ91479    6.12%    passed    100.00%
+   6  AGE99088    6.12%    passed     80.93%
+   7  AKA40186    6.12%    passed    100.00%
+   8  AUT30284    6.12%    passed    100.00%
+   9  AGE99142    6.12%    passed    100.00%
+  10  AHN15159    6.12%    passed    100.00%
+  11  ACZ51781    6.12%    passed    100.00%
+  12  ABI94009    6.12%    passed    100.00%
+  13  AMK49262    6.12%    passed    100.00%
+  14  AKA40210    6.12%    passed    100.00%
+  15  AIC34778   47.96%    passed     99.82%
+****  TOTAL       8.91%  0 sequences failed composition chi2 test (p-value<5%; df=19)
+Reading alignment file ../example/test/NSP6_11.phy ... Phylip format detected
+Alignment most likely contains protein sequences
+WARNING: 6 sites contain only gaps or ambiguous characters.
+Alignment has 14 sequences with 98 columns, 32 distinct patterns
+4 parsimony-informative, 9 singleton sites, 85 constant sites
+          Gap/Ambiguity  Composition  p-value
+   1  AKA40554    6.12%    passed    100.00%
+   2  AGV31579    6.12%    passed    100.00%
+   3  AHZ91515    6.12%    passed    100.00%
+   4  ALQ76262    6.12%    passed    100.00%
+   5  AHZ32864    6.12%    passed    100.00%
+   6  ABV53299    6.12%    passed    100.00%
+   7  AHN15101    6.12%    passed    100.00%
+   8  AGA03874    6.12%    passed    100.00%
+   9  ADK46781    6.12%    passed    100.00%
+  10  ADO78646    6.12%    passed    100.00%
+  11  AEB79539    6.12%    passed    100.00%
+  12  AHN15251    6.12%    passed    100.00%
+  13  AHZ91141    6.12%    passed    100.00%
+  14  AHN15328    6.12%    passed    100.00%
+****  TOTAL       6.12%  0 sequences failed composition chi2 test (p-value<5%; df=19)
+Reading alignment file ../example/test/NSP6_12.phy ... Phylip format detected
+Alignment most likely contains protein sequences
+WARNING: 6 sites contain only gaps or ambiguous characters.
+Alignment has 4 sequences with 98 columns, 22 distinct patterns
+0 parsimony-informative, 3 singleton sites, 95 constant sites
+          Gap/Ambiguity  Composition  p-value
+   1  ALQ76706    6.12%    passed    100.00%
+   2  ALQ76250    6.12%    passed    100.00%
+   3  AGV31675    6.12%    passed    100.00%
+   4  ASE04221    6.12%    passed    100.00%
+****  TOTAL       6.12%  0 sequences failed composition chi2 test (p-value<5%; df=19)
+Reading alignment file ../example/test/NSP6_13.phy ... Phylip format detected
+Alignment most likely contains protein sequences
+WARNING: 6 sites contain only gaps or ambiguous characters.
+Alignment has 14 sequences with 98 columns, 29 distinct patterns
+6 parsimony-informative, 3 singleton sites, 89 constant sites
+          Gap/Ambiguity  Composition  p-value
+   1  AQX77825    6.12%    passed    100.00%
+   2  AQX77841    6.12%    passed    100.00%
+   3  ALQ77437    6.12%    passed    100.00%
+   4  AQX77867    6.12%    passed    100.00%
+   5  AEB80258    6.12%    passed    100.00%
+   6  AEB79503    6.12%    passed    100.00%
+   7  AMK49272    6.12%    passed    100.00%
+   8  AGH16329    6.12%    passed    100.00%
+   9  ADO78578    6.12%    passed    100.00%
+  10  AHV80157    6.12%    passed    100.00%
+  11  AMK49254    6.12%    passed    100.00%
+  12  AEB80170    6.12%    passed    100.00%
+  13  AGA03862    6.12%    passed    100.00%
+  14  AHN09169    6.12%    passed    100.00%
+****  TOTAL       6.12%  0 sequences failed composition chi2 test (p-value<5%; df=19)
+Reading alignment file ../example/test/NSP6_14.phy ... Phylip format detected
+Alignment most likely contains protein sequences
+WARNING: 6 sites contain only gaps or ambiguous characters.
+Alignment has 13 sequences with 98 columns, 33 distinct patterns
+3 parsimony-informative, 11 singleton sites, 84 constant sites
+          Gap/Ambiguity  Composition  p-value
+   1  ANN82383    6.12%    passed     99.77%
+   2  AHZ90985    6.12%    passed    100.00%
+   3  AHV78868    6.12%    passed    100.00%
+   4  AHV79010    6.12%    passed    100.00%
+   5  ANN82350    6.12%    passed    100.00%
+   6  AEB79489    6.12%    passed    100.00%
+   7  AHV80316    6.12%    passed    100.00%
+   8  AHV78999    6.12%    passed    100.00%
+   9  ANN82442    6.12%    passed    100.00%
+  10  AHZ32812    6.12%    passed    100.00%
+  11  AGH16247    6.12%    passed    100.00%
+  12  AHV80305    6.12%    passed     99.94%
+  13  AHV80577    6.12%    passed    100.00%
+****  TOTAL       6.12%  0 sequences failed composition chi2 test (p-value<5%; df=19)
+Reading alignment file ../example/test/NSP6_15.phy ... Phylip format detected
+Alignment most likely contains protein sequences
+WARNING: 6 sites contain only gaps or ambiguous characters.
+Alignment has 4 sequences with 98 columns, 24 distinct patterns
+0 parsimony-informative, 4 singleton sites, 94 constant sites
+          Gap/Ambiguity  Composition  p-value
+   1  AZB48658    6.12%    passed    100.00%
+   2  ADO78656    6.12%    passed    100.00%
+   3  AEK69605    6.12%    passed    100.00%
+   4  AHN09193    6.12%    passed    100.00%
+****  TOTAL       6.12%  0 sequences failed composition chi2 test (p-value<5%; df=19)
+Splitting partition NSP6_01.phy...
+Alignment was printed to ../example/test/splitted/NSP6_01_0.phy
+Splitting partition NSP6_02.phy...
+Alignment was printed to ../example/test/splitted/NSP6_02_0.phy
+Splitting partition NSP6_03.phy...
+Alignment was printed to ../example/test/splitted/NSP6_03_0.phy
+Splitting partition NSP6_04.phy...
+Alignment was printed to ../example/test/splitted/NSP6_04_0.phy
+Splitting partition NSP6_05.phy...
+Alignment was printed to ../example/test/splitted/NSP6_05_0.phy
+Splitting partition NSP6_06.phy...
+Alignment was printed to ../example/test/splitted/NSP6_06_0.phy
+Splitting partition NSP6_07.phy...
+Alignment was printed to ../example/test/splitted/NSP6_07_0.phy
+Splitting partition NSP6_08.phy...
+Alignment was printed to ../example/test/splitted/NSP6_08_0.phy
+Splitting partition NSP6_09.phy...
+Alignment was printed to ../example/test/splitted/NSP6_09_0.phy
+Splitting partition NSP6_10.phy...
+Alignment was printed to ../example/test/splitted/NSP6_10_0.phy
+Splitting partition NSP6_11.phy...
+Alignment was printed to ../example/test/splitted/NSP6_11_0.phy
+Splitting partition NSP6_12.phy...
+Alignment was printed to ../example/test/splitted/NSP6_12_0.phy
+Splitting partition NSP6_13.phy...
+Alignment was printed to ../example/test/splitted/NSP6_13_0.phy
+Splitting partition NSP6_14.phy...
+Alignment was printed to ../example/test/splitted/NSP6_14_0.phy
+Splitting partition NSP6_15.phy...
+Alignment was printed to ../example/test/splitted/NSP6_15_0.phy
+Reading 15 alignment files in directory ../example/test/splitted/
+Reading alignment file ../example/test/splitted/NSP6_01_0.phy ... Phylip format detected
+Alignment most likely contains protein sequences
+WARNING: 6 sites contain only gaps or ambiguous characters.
+Alignment has 16 sequences with 98 columns, 41 distinct patterns
+14 parsimony-informative, 7 singleton sites, 77 constant sites
+          Gap/Ambiguity  Composition  p-value
+   1  AIC34766    6.12%    passed    100.00%
+   2  AKA40616    6.12%    passed    100.00%
+   3  AHZ33310    6.12%    passed    100.00%
+   4  AHZ91455    6.12%    passed    100.00%
+   5  AIN41102    6.12%    passed    100.00%
+   6  AFC90180    6.12%    passed    100.00%
+   7  AHZ91231    6.12%    passed    100.00%
+   8  AHV80034    6.12%    passed    100.00%
+   9  AHZ32592    6.12%    passed    100.00%
+  10  AHZ91527    6.12%    passed    100.00%
+  11  AFK09588    6.12%    passed    100.00%
+  12  AHZ91362    6.12%    passed    100.00%
+  13  AUT30282    6.12%    passed    100.00%
+  14  AAK15266    6.12%    passed    100.00%
+  15  AMK49250    6.12%    passed    100.00%
+  16  ANN82459    6.12%    passed    100.00%
+****  TOTAL       6.12%  0 sequences failed composition chi2 test (p-value<5%; df=19)
+Reading alignment file ../example/test/splitted/NSP6_02_0.phy ... Phylip format detected
+Alignment most likely contains protein sequences
+Alignment has 16 sequences with 98 columns, 89 distinct patterns
+62 parsimony-informative, 5 singleton sites, 31 constant sites
+          Gap/Ambiguity  Composition  p-value
+   1  ART66879   10.20%    passed     99.85%
+   2  ALG35679    2.04%    passed     57.03%
+   3  AFR23361    6.12%    passed     99.64%
+   4  AGS43816   10.20%    passed     99.89%
+   5  ADE80940    0.00%    passed    100.00%
+   6  ACC91686    2.04%    passed     84.18%
+   7  AGF86372    0.00%    passed    100.00%
+   8  AGB51107    6.12%    passed     99.91%
+   9  AMD39983    2.04%    passed     97.40%
+  10  AMK49270    0.00%    passed    100.00%
+  11  AGS43851   10.20%    passed     99.83%
+  12  AGS43839   10.20%    passed     99.42%
+  13  AKA40566    0.00%    passed     99.98%
+  14  AAA57460    6.12%    passed     99.70%
+  15  ACC91684    2.04%    passed     82.61%
+  16  ABV53307   74.49%    passed     82.21%
+WARNING: 1 sequences contain more than 50% gaps/ambiguity
+****  TOTAL       8.86%  0 sequences failed composition chi2 test (p-value<5%; df=19)
+Reading alignment file ../example/test/splitted/NSP6_03_0.phy ... Phylip format detected
+Alignment most likely contains protein sequences
+Alignment has 15 sequences with 98 columns, 39 distinct patterns
+11 parsimony-informative, 9 singleton sites, 78 constant sites
+          Gap/Ambiguity  Composition  p-value
+   1  AIC81014    2.04%    passed    100.00%
+   2  AGF86086    2.04%    passed    100.00%
+   3  AGF86223    2.04%    passed    100.00%
+   4  AGF85913    3.06%    passed    100.00%
+   5  AEV53335    0.00%    passed    100.00%
+   6  ATI14969    0.00%    passed    100.00%
+   7  AGF86233    4.08%    passed    100.00%
+   8  AGF85895    2.04%    passed    100.00%
+   9  AGF86122    2.04%    passed    100.00%
+  10  AFZ75595    0.00%    passed     99.99%
+  11  AKA40125    0.00%    passed     99.84%
+  12  AHZ32849    2.04%    passed    100.00%
+  13  AGF86050    2.04%    passed    100.00%
+  14  AIC81004    2.04%    passed    100.00%
+  15  AQQ13088    0.00%    passed    100.00%
+****  TOTAL       1.56%  0 sequences failed composition chi2 test (p-value<5%; df=19)
+Reading alignment file ../example/test/splitted/NSP6_04_0.phy ... Phylip format detected
+Alignment most likely contains protein sequences
+Alignment has 7 sequences with 98 columns, 29 distinct patterns
+1 parsimony-informative, 9 singleton sites, 88 constant sites
+          Gap/Ambiguity  Composition  p-value
+   1  ABV53243    0.00%    passed    100.00%
+   2  ASE03986    0.00%    passed    100.00%
+   3  ACH72468    0.00%    passed    100.00%
+   4  AMR44591    0.00%    passed    100.00%
+   5  AAG15312    0.00%    passed    100.00%
+   6  AGE47065    0.00%    passed    100.00%
+   7  BBB33722    0.00%    passed    100.00%
+****  TOTAL       0.00%  0 sequences failed composition chi2 test (p-value<5%; df=18)
+Reading alignment file ../example/test/splitted/NSP6_05_0.phy ... Phylip format detected
+Alignment most likely contains protein sequences
+WARNING: 6 sites contain only gaps or ambiguous characters.
+Alignment has 16 sequences with 98 columns, 43 distinct patterns
+17 parsimony-informative, 5 singleton sites, 76 constant sites
+          Gap/Ambiguity  Composition  p-value
+   1  AFJ68324    7.14%    passed    100.00%
+   2  ANN82381    6.12%    passed    100.00%
+   3  AHZ32996    6.12%    passed    100.00%
+   4  ANN82330    6.12%    passed    100.00%
+   5  ALQ77222    6.12%    passed    100.00%
+   6  AGV31735    6.12%    passed    100.00%
+   7  AHZ91033    6.12%    passed    100.00%
+   8  AEK64397    6.12%    passed    100.00%
+   9  AGE46969    6.12%    passed    100.00%
+  10  ACU87647    6.12%    passed     71.98%
+  11  AHZ32351    6.12%    passed    100.00%
+  12  ANN82429    6.12%    passed    100.00%
+  13  ALQ77330    6.12%    passed    100.00%
+  14  AGE47053    6.12%    passed    100.00%
+  15  AKA40137    6.12%    passed    100.00%
+  16  AHV80229    6.12%    passed    100.00%
+****  TOTAL       6.19%  0 sequences failed composition chi2 test (p-value<5%; df=19)
+Reading alignment file ../example/test/splitted/NSP6_06_0.phy ... Phylip format detected
+Alignment most likely contains protein sequences
+WARNING: 6 sites contain only gaps or ambiguous characters.
+Alignment has 14 sequences with 98 columns, 31 distinct patterns
+7 parsimony-informative, 4 singleton sites, 87 constant sites
+          Gap/Ambiguity  Composition  p-value
+   1  AGE47532    6.12%    passed    100.00%
+   2  AHZ91647    6.12%    passed    100.00%
+   3  AEG25333    6.12%    passed    100.00%
+   4  AHV80512    6.12%    passed     86.89%
+   5  AKA40162    6.12%    passed    100.00%
+   6  AHZ91599    6.12%    passed    100.00%
+   7  AKA40149    6.12%    passed    100.00%
+   8  AKA40367    6.12%    passed    100.00%
+   9  AGE47077    6.12%    passed    100.00%
+  10  BAN82685    6.12%    passed    100.00%
+  11  AHZ33056    6.12%    passed    100.00%
+  12  AGV31519    6.12%    passed    100.00%
+  13  AHZ32960    6.12%    passed    100.00%
+  14  AGE10419    6.12%    passed    100.00%
+****  TOTAL       6.12%  0 sequences failed composition chi2 test (p-value<5%; df=19)
+Reading alignment file ../example/test/splitted/NSP6_07_0.phy ... Phylip format detected
+Alignment most likely contains protein sequences
+WARNING: 6 sites contain only gaps or ambiguous characters.
+Alignment has 12 sequences with 98 columns, 29 distinct patterns
+1 parsimony-informative, 9 singleton sites, 88 constant sites
+          Gap/Ambiguity  Composition  p-value
+   1  AGE47005    6.12%    passed    100.00%
+   2  AGE47388    6.12%    passed    100.00%
+   3  AQX77839    6.12%    passed    100.00%
+   4  AQX77833    6.12%    passed    100.00%
+   5  AHZ91559    6.12%    passed    100.00%
+   6  AGE47161    6.12%    passed    100.00%
+   7  AGE45369    6.12%    passed    100.00%
+   8  AIW47359    6.12%    passed     94.50%
+   9  AHZ33457    6.12%    passed    100.00%
+  10  AHZ33020    6.12%    passed    100.00%
+  11  AGE10442    6.12%    passed    100.00%
+  12  AGE47125    6.12%    passed    100.00%
+****  TOTAL       6.12%  0 sequences failed composition chi2 test (p-value<5%; df=19)
+Reading alignment file ../example/test/splitted/NSP6_08_0.phy ... Phylip format detected
+Alignment most likely contains protein sequences
+WARNING: 6 sites contain only gaps or ambiguous characters.
+Alignment has 14 sequences with 98 columns, 47 distinct patterns
+3 parsimony-informative, 12 singleton sites, 83 constant sites
+          Gap/Ambiguity  Composition  p-value
+   1  ABV53251   62.24%    passed     96.56%
+   2  AGE99027    6.12%    passed    100.00%
+   3  BBA19136    6.12%    passed    100.00%
+   4  AHV80193    6.12%    passed    100.00%
+   5  AGB06157    6.12%    passed    100.00%
+   6  AFR77816    6.12%    passed    100.00%
+   7  AGE98704    6.12%    passed    100.00%
+   8  AHV80010    6.12%    passed    100.00%
+   9  ABV53267    6.12%    passed    100.00%
+  10  AEB79501    6.12%    passed    100.00%
+  11  AGE99311    6.12%    passed    100.00%
+  12  AGE98507    6.12%    passed    100.00%
+  13  AEB79563    6.12%    passed    100.00%
+  14  AGE98884    6.12%    passed    100.00%
+WARNING: 1 sequences contain more than 50% gaps/ambiguity
+****  TOTAL      10.13%  0 sequences failed composition chi2 test (p-value<5%; df=19)
+Reading alignment file ../example/test/splitted/NSP6_09_0.phy ... Phylip format detected
+Alignment most likely contains protein sequences
+WARNING: 6 sites contain only gaps or ambiguous characters.
+Alignment has 16 sequences with 98 columns, 37 distinct patterns
+8 parsimony-informative, 9 singleton sites, 81 constant sites
+          Gap/Ambiguity  Composition  p-value
+   1  ANN82474    6.12%    passed    100.00%
+   2  AFM74240    6.12%    passed    100.00%
+   3  AKE33212    6.12%    passed    100.00%
+   4  AIA81306    6.12%    passed    100.00%
+   5  ADB97221    6.12%    passed    100.00%
+   6  AHW80451    6.12%    passed    100.00%
+   7  ANN82449    6.12%    passed    100.00%
+   8  ANN82454    6.12%    passed    100.00%
+   9  AQQ80629    6.12%    passed    100.00%
+  10  AEL20311    6.12%    passed    100.00%
+  11  AEL20305    6.12%    passed    100.00%
+  12  AKA40832    6.12%    passed    100.00%
+  13  AIA81283    6.12%    passed    100.00%
+  14  AKE33201    6.12%    passed    100.00%
+  15  AGD80561    6.12%    passed    100.00%
+  16  AAX13490    6.12%    passed    100.00%
+****  TOTAL       6.12%  0 sequences failed composition chi2 test (p-value<5%; df=19)
+Reading alignment file ../example/test/splitted/NSP6_10_0.phy ... Phylip format detected
+Alignment most likely contains protein sequences
+WARNING: 6 sites contain only gaps or ambiguous characters.
+Alignment has 15 sequences with 98 columns, 44 distinct patterns
+5 parsimony-informative, 6 singleton sites, 87 constant sites
+          Gap/Ambiguity  Composition  p-value
+   1  AHZ91479    6.12%    passed    100.00%
+   2  AHN15159    6.12%    passed    100.00%
+   3  AMK49262    6.12%    passed    100.00%
+   4  AKA40186    6.12%    passed    100.00%
+   5  AHZ33250    6.12%    passed    100.00%
+   6  AKA40210    6.12%    passed    100.00%
+   7  AGE99142    6.12%    passed    100.00%
+   8  AGE98731    6.12%    passed    100.00%
+   9  AGE99088    6.12%    passed     80.93%
+  10  AEK64403    6.12%    passed    100.00%
+  11  AUT30284    6.12%    passed    100.00%
+  12  ABI94009    6.12%    passed    100.00%
+  13  AIC34778   47.96%    passed     99.82%
+  14  ACZ51781    6.12%    passed    100.00%
+  15  AHZ32776    6.12%    passed    100.00%
+****  TOTAL       8.91%  0 sequences failed composition chi2 test (p-value<5%; df=19)
+Reading alignment file ../example/test/splitted/NSP6_11_0.phy ... Phylip format detected
+Alignment most likely contains protein sequences
+WARNING: 6 sites contain only gaps or ambiguous characters.
+Alignment has 14 sequences with 98 columns, 32 distinct patterns
+4 parsimony-informative, 9 singleton sites, 85 constant sites
+          Gap/Ambiguity  Composition  p-value
+   1  AHZ91141    6.12%    passed    100.00%
+   2  AHN15101    6.12%    passed    100.00%
+   3  AHZ91515    6.12%    passed    100.00%
+   4  AHN15251    6.12%    passed    100.00%
+   5  ADO78646    6.12%    passed    100.00%
+   6  ADK46781    6.12%    passed    100.00%
+   7  AHZ32864    6.12%    passed    100.00%
+   8  AKA40554    6.12%    passed    100.00%
+   9  ABV53299    6.12%    passed    100.00%
+  10  ALQ76262    6.12%    passed    100.00%
+  11  AEB79539    6.12%    passed    100.00%
+  12  AHN15328    6.12%    passed    100.00%
+  13  AGV31579    6.12%    passed    100.00%
+  14  AGA03874    6.12%    passed    100.00%
+****  TOTAL       6.12%  0 sequences failed composition chi2 test (p-value<5%; df=19)
+Reading alignment file ../example/test/splitted/NSP6_12_0.phy ... Phylip format detected
+Alignment most likely contains protein sequences
+WARNING: 6 sites contain only gaps or ambiguous characters.
+Alignment has 4 sequences with 98 columns, 22 distinct patterns
+0 parsimony-informative, 3 singleton sites, 95 constant sites
+          Gap/Ambiguity  Composition  p-value
+   1  ALQ76706    6.12%    passed    100.00%
+   2  ALQ76250    6.12%    passed    100.00%
+   3  ASE04221    6.12%    passed    100.00%
+   4  AGV31675    6.12%    passed    100.00%
+****  TOTAL       6.12%  0 sequences failed composition chi2 test (p-value<5%; df=19)
+Reading alignment file ../example/test/splitted/NSP6_13_0.phy ... Phylip format detected
+Alignment most likely contains protein sequences
+WARNING: 6 sites contain only gaps or ambiguous characters.
+Alignment has 14 sequences with 98 columns, 29 distinct patterns
+6 parsimony-informative, 3 singleton sites, 89 constant sites
+          Gap/Ambiguity  Composition  p-value
+   1  AEB80258    6.12%    passed    100.00%
+   2  ALQ77437    6.12%    passed    100.00%
+   3  AQX77825    6.12%    passed    100.00%
+   4  AEB80170    6.12%    passed    100.00%
+   5  AMK49272    6.12%    passed    100.00%
+   6  AGA03862    6.12%    passed    100.00%
+   7  AQX77841    6.12%    passed    100.00%
+   8  AHN09169    6.12%    passed    100.00%
+   9  AQX77867    6.12%    passed    100.00%
+  10  ADO78578    6.12%    passed    100.00%
+  11  AHV80157    6.12%    passed    100.00%
+  12  AGH16329    6.12%    passed    100.00%
+  13  AMK49254    6.12%    passed    100.00%
+  14  AEB79503    6.12%    passed    100.00%
+****  TOTAL       6.12%  0 sequences failed composition chi2 test (p-value<5%; df=19)
+Reading alignment file ../example/test/splitted/NSP6_14_0.phy ... Phylip format detected
+Alignment most likely contains protein sequences
+WARNING: 6 sites contain only gaps or ambiguous characters.
+Alignment has 13 sequences with 98 columns, 33 distinct patterns
+3 parsimony-informative, 11 singleton sites, 84 constant sites
+          Gap/Ambiguity  Composition  p-value
+   1  AHV80305    6.12%    passed     99.94%
+   2  AGH16247    6.12%    passed    100.00%
+   3  AHZ90985    6.12%    passed    100.00%
+   4  AHV80316    6.12%    passed    100.00%
+   5  AHV80577    6.12%    passed    100.00%
+   6  AHV78868    6.12%    passed    100.00%
+   7  ANN82350    6.12%    passed    100.00%
+   8  AEB79489    6.12%    passed    100.00%
+   9  ANN82383    6.12%    passed     99.77%
+  10  ANN82442    6.12%    passed    100.00%
+  11  AHV78999    6.12%    passed    100.00%
+  12  AHV79010    6.12%    passed    100.00%
+  13  AHZ32812    6.12%    passed    100.00%
+****  TOTAL       6.12%  0 sequences failed composition chi2 test (p-value<5%; df=19)
+Reading alignment file ../example/test/splitted/NSP6_15_0.phy ... Phylip format detected
+Alignment most likely contains protein sequences
+WARNING: 6 sites contain only gaps or ambiguous characters.
+Alignment has 4 sequences with 98 columns, 24 distinct patterns
+0 parsimony-informative, 4 singleton sites, 94 constant sites
+          Gap/Ambiguity  Composition  p-value
+   1  AZB48658    6.12%    passed    100.00%
+   2  ADO78656    6.12%    passed    100.00%
+   3  AEK69605    6.12%    passed    100.00%
+   4  AHN09193    6.12%    passed    100.00%
+****  TOTAL       6.12%  0 sequences failed composition chi2 test (p-value<5%; df=19)
+Subset	Type	Seqs	Sites	Infor	Invar	Model	Name
+1		16	98	14	77		NSP6_01_0.phy
+2		16	98	62	31		NSP6_02_0.phy
+3		15	98	11	78		NSP6_03_0.phy
+4		7	98	1	88		NSP6_04_0.phy
+5		16	98	17	76		NSP6_05_0.phy
+6		14	98	7	87		NSP6_06_0.phy
+7		12	98	1	88		NSP6_07_0.phy
+8		14	98	3	83		NSP6_08_0.phy
+9		16	98	8	81		NSP6_09_0.phy
+10		15	98	5	87		NSP6_10_0.phy
+11		14	98	4	85		NSP6_11_0.phy
+12		4	98	0	95		NSP6_12_0.phy
+WARNING: No parsimony-informative sites in partition NSP6_12_0.phy
+13		14	98	6	89		NSP6_13_0.phy
+14		13	98	3	84		NSP6_14_0.phy
+15		4	98	0	94		NSP6_15_0.phy
+WARNING: No parsimony-informative sites in partition NSP6_15_0.phy
+Unlinked 190 total sequences
+
+Creating fast initial parsimony tree by random order stepwise addition...
+0.014 seconds, parsimony score: 365 (based on 247 sites)
+Perform fast likelihood tree search using LG+I+G model...
+Estimate model parameters (epsilon = 5.000)
+Perform nearest neighbor interchange...
+Estimate model parameters (epsilon = 1.000)
+Estimate model parameters (epsilon = 1.000)
+Estimate model parameters (epsilon = 1.000)
+Estimate model parameters (epsilon = 1.000)
+Estimate model parameters (epsilon = 1.000)
+Estimate model parameters (epsilon = 1.000)
+Estimate model parameters (epsilon = 1.000)
+Estimate model parameters (epsilon = 1.000)
+Estimate model parameters (epsilon = 1.000)
+Estimate model parameters (epsilon = 1.000)
+Estimate model parameters (epsilon = 1.000)
+Estimate model parameters (epsilon = 1.000)
+Estimate model parameters (epsilon = 1.000)
+Estimate model parameters (epsilon = 1.000)
+Estimate model parameters (epsilon = 1.000)
+Log-likelihood: -6572.699
+Time for fast ML tree search: 1.301 seconds
+
+NOTE: ModelFinder requires 2 MB RAM!
+Selecting individual models for 15 charsets using BIC...
+ No. Model        Score       TreeLen     Charset
+   1 HIVb+I       1095.026    0.348       NSP6_01_0.phy
+   2 HIVb+G4      1980.520    2.360       NSP6_02_0.phy
+   3 HIVb         1064.000    0.270       NSP6_03_0.phy
+   4 HIVb         783.300     0.112       NSP6_04_0.phy
+   5 HIVb         1052.794    0.305       NSP6_05_0.phy
+   6 HIVb+I       905.725     0.191       NSP6_06_0.phy
+   7 HIVb         837.706     0.128       NSP6_07_0.phy
+   8 HIVb         897.243     0.183       NSP6_08_0.phy
+   9 HIVb         983.687     0.240       NSP6_09_0.phy
+  10 HIVb         859.771     0.150       NSP6_10_0.phy	0h:0m:51s (0h:0m:25s left)
+  11 HIVb         858.320     0.150       NSP6_11_0.phy	0h:0m:54s (0h:0m:19s left)
+  12 HIVb+I       632.959     0.069       NSP6_12_0.phy	0h:0m:55s (0h:0m:13s left)
+  13 HIVb+I       853.234     0.147       NSP6_13_0.phy	0h:1m:5s (0h:0m:10s left)
+  14 HIVb         873.916     0.163       NSP6_14_0.phy	0h:1m:8s (0h:0m:4s left)
+  15 HIVb         623.177     0.042       NSP6_15_0.phy	0h:1m:8s (0h:0m:0s left)
+Full partition model BIC score: 15222.115 (LnL: -6371.245  df:340)
+Partition information was printed to ../example/output/.best_scheme.nex
+Partition information in Raxml format was printed to ../example/output/.best_scheme
+
+All model information printed to ../example/output/.model.gz
+CPU time for ModelFinder: 69.522 seconds (0h:1m:9s)
+Wall-clock time for ModelFinder: 70.319 seconds (0h:1m:10s)
+WARNING: States(s) Y rarely appear in partition NSP6_01_0.phy and may cause numerical problems
+WARNING: States(s) Y rarely appear in partition NSP6_03_0.phy and may cause numerical problems
+NOTE: State(s) Y not present in partition NSP6_04_0.phy and thus removed from Markov process to prevent numerical problems
+WARNING: States(s) Y rarely appear in partition NSP6_08_0.phy and may cause numerical problems
+WARNING: States(s) Y rarely appear in partition NSP6_09_0.phy and may cause numerical problems
+WARNING: States(s) Y rarely appear in partition NSP6_11_0.phy and may cause numerical problems
+WARNING: States(s) Y rarely appear in partition NSP6_12_0.phy and may cause numerical problems
+WARNING: States(s) Y rarely appear in partition NSP6_13_0.phy and may cause numerical problems
+WARNING: States(s) Y rarely appear in partition NSP6_15_0.phy and may cause numerical problems
+NOTE: 1 states (see above) are not present and thus removed from Markov process to prevent numerical problems
+
+NOTE: 2 MB RAM (0 GB) is required!
+Estimate model parameters (epsilon = 0.100)
+Optimal log-likelihood: -6371.243
+--------------------------------------------------------------------
+|                SEPARATE TREE SEARCH FOR PARTITIONS               |
+--------------------------------------------------------------------
+Partition NSP6_02_0.phy / Iterations: 104 / LogL: -920.131 / Time: 0h:0m:16s
+Partition NSP6_05_0.phy / Iterations: 152 / LogL: -459.915 / Time: 0h:0m:18s
+Partition NSP6_10_0.phy / Iterations: 204 / LogL: -367.968 / Time: 0h:0m:21s
+Partition NSP6_08_0.phy / Iterations: 211 / LogL: -391.309 / Time: 0h:0m:23s
+Partition NSP6_01_0.phy / Iterations: 134 / LogL: -473.151 / Time: 0h:0m:25s
+Partition NSP6_09_0.phy / Iterations: 104 / LogL: -425.361 / Time: 0h:0m:27s
+Partition NSP6_03_0.phy / Iterations: 102 / LogL: -469.567 / Time: 0h:0m:28s
+Partition NSP6_11_0.phy / Iterations: 110 / LogL: -371.848 / Time: 0h:0m:29s
+Partition NSP6_06_0.phy / Iterations: 246 / LogL: -393.124 / Time: 0h:0m:32s
+Partition NSP6_14_0.phy / Iterations: 111 / LogL: -384.231 / Time: 0h:0m:33s
+Partition NSP6_13_0.phy / Iterations: 194 / LogL: -366.419 / Time: 0h:0m:36s
+Partition NSP6_07_0.phy / Iterations: 275 / LogL: -370.711 / Time: 0h:0m:37s
+Partition NSP6_04_0.phy / Iterations: 102 / LogL: -366.433 / Time: 0h:0m:37s
+Partition NSP6_15_0.phy / Iterations: 101 / LogL: -300.126 / Time: 0h:0m:37s
+Partition NSP6_12_0.phy / Iterations: 101 / LogL: -302.724 / Time: 0h:0m:37s
+--------------------------------------------------------------------
+|                    FINALIZING TREE SEARCH                        |
+--------------------------------------------------------------------
+Performs final model parameters optimization
+Estimate model parameters (epsilon = 0.010)
+Optimal log-likelihood: -6363.018
+Partition information was printed to ../example/output/.best_model.nex
+BEST SCORE FOUND : -6363.018
+Total tree length: 4.738
+
+Total number of iterations: 0
+CPU time used for tree search: 36.054 sec (0h:0m:36s)
+Wall-clock time used for tree search: 37.506 sec (0h:0m:37s)
+Total CPU time used: 36.191 sec (0h:0m:36s)
+Total wall-clock time used: 37.653 sec (0h:0m:37s)
+
+Analysis results written to: 
+  IQ-TREE report:                ../example/output/.iqtree
+  Maximum-likelihood tree:       ../example/output/.treefile
+  Screen log file:               ../example/output/.log
+
+Date and Time: Thu Jan 25 15:05:11 2024

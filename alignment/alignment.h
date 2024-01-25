@@ -880,8 +880,10 @@ public:
 	 * @param site_freq_file file name
      * @return TRUE if alignment needs to be changed, FALSE otherwise
 	 */
-	bool readSiteStateFreq(const char* site_freq_file);
 
+        bool readSiteStateFreq(const char* site_freq_file);
+
+        vector<Alignment*> splitByUpperBound(int upper_bound);
 
 protected:
 

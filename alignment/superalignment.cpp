@@ -69,6 +69,10 @@ SuperAlignment::SuperAlignment(Params &params) : Alignment()
 void SuperAlignment::readFromParams(Params &params) {
     if (isDirectory(params.partition_file)) {
         // reading all files in the directory
+        slitPartitionDir(params.partition_file, params.sequence_type, params.intype, params.model_name, params.remove_empty_seq, params.num_processors);
+        if (params.partition_file[strlen(params.partition_file)-1] != '/')
+            strcat(params.partition_file, "/split/");
+        else strcat(params.partition_file, "split/");
         readPartitionDir(params.partition_file, params.sequence_type, params.intype, params.model_name, params.remove_empty_seq);
     } else if (strstr(params.partition_file, ",") != nullptr) {
         // reading all files in a comma-separated list
@@ -408,6 +412,7 @@ void SuperAlignment::readPartitionNexus(Params &params) {
         nexus.Add(assumptions_block);
         nexus.Add(data_block);
     }
+    
 
     MyToken token(nexus.inf);
     nexus.Execute(token);
@@ -497,6 +502,7 @@ void SuperAlignment::readPartitionNexus(Params &params) {
             
             if (part_aln != new_aln && part_aln != input_aln) delete part_aln;
             new_aln->name = (*it)->name;
+            cout << new_aln->name << '\n';
             new_aln->model_name = (*it)->model_name;
             new_aln->aln_file = (*it)->aln_file;
             new_aln->position_spec = (*it)->position_spec;
@@ -512,6 +518,7 @@ void SuperAlignment::readPartitionNexus(Params &params) {
     if (input_aln)
         delete input_aln;
     delete sets_block;
+    // exit(-1);
 }
 
 void SuperAlignment::readPartitionDir(string partition_dir, char *sequence_type,
@@ -554,7 +561,70 @@ void SuperAlignment::readPartitionDir(string partition_dir, char *sequence_type,
         if (sequence_type)
             new_aln->sequence_type = sequence_type;
         partitions.push_back(new_aln);
+    }    
+}
+
+void SuperAlignment::slitPartitionDir(string partition_dir, char *sequence_type,
+                                      InputType &intype, string model, bool remove_empty_seq, int num_processors) {
+    //    Params origin_params = params;
+
+    StrVector filenames;
+    string dir = partition_dir;
+    if (dir.back() != '/')
+        dir.append("/");
+    getFilesInDir(partition_dir.c_str(), filenames);
+    if (filenames.empty())
+        outError("No file found in ", partition_dir);
+    std::sort(filenames.begin(), filenames.end());
+    cout << "Reading " << filenames.size() << " alignment files in directory " << partition_dir << endl;
+    
+    for (auto it = filenames.begin(); it != filenames.end(); it++)
+    {
+        Alignment *part_aln;
+        part_aln = createAlignment(dir+*it, sequence_type, intype, model_name);
+//        if (part_aln->seq_type == SEQ_DNA && (strncmp(params.sequence_type, "CODON", 5) == 0 || strncmp(params.sequence_type, "NT2AA", 5) == 0)) {
+//            Alignment *new_aln = new Alignment();
+//            new_aln->convertToCodonOrAA(part_aln, params.sequence_type+5, strncmp(params.sequence_type, "NT2AA", 5) == 0);
+//            delete part_aln;
+//            part_aln = new_aln;
+//        }
+        Alignment *new_aln;
+        if (remove_empty_seq)
+            new_aln = part_aln->removeGappySeq();
+        else
+            new_aln = part_aln;
+        // also rebuild states set of each sequence for likelihood computation
+//        new_aln->buildSeqStates();
+        
+        if (part_aln != new_aln) delete part_aln;
+        new_aln->name = *it;
+        new_aln->model_name = model_name;
+        new_aln->aln_file = dir + *it;
+        new_aln->position_spec = "";
+        if (sequence_type)
+            new_aln->sequence_type = sequence_type;
+        partitions.push_back(new_aln);
     }
+
+    double total_cost = 0;
+    for (int part = 0; part < partitions.size(); part++) {
+        total_cost += (double)partitions[part]->getNSeq() * partitions[part]->getNPattern() * partitions[part]->getNStates();
+    }
+
+    double average_cost = total_cost / num_processors;
+
+    string dir_split = dir + "split/";
+    mkdir(dir_split.c_str(), 0777);
+    for (int part = 0; part < partitions.size(); part++) {
+        int upper_bound = average_cost / partitions[part]->getNPattern() / partitions[part]->getNStates();
+        upper_bound = max(upper_bound, 5);
+        cout << "Splitting partition " << partitions[part]->name << "..." << endl;
+        vector<Alignment*> split_partitions = partitions[part]->splitByUpperBound(upper_bound);
+        for (int i = 0; i < split_partitions.size(); i++) {
+            split_partitions[i]->printAlignment(IN_PHYLIP, (dir_split + split_partitions[i]->name).c_str());
+        }
+    }
+    partitions.clear();
 }
 
 void SuperAlignment::readPartitionList(string file_list, char *sequence_type,
@@ -598,6 +668,7 @@ void SuperAlignment::readPartitionList(string file_list, char *sequence_type,
             new_aln->sequence_type = sequence_type;
         partitions.push_back(new_aln);
         }
+    
 }
 
 void SuperAlignment::printPartition(const char *filename, const char *aln_file) {
@@ -628,6 +699,7 @@ void SuperAlignment::printPartition(ostream &out, const char *aln_file, bool app
         replace(name.begin(), name.end(), '+', '_');
         int end_site = start_site + partitions[part]->getNSite();
         out << "  charset " << name << " = " << start_site << "-" << end_site-1 << ";" << endl;
+        // out << "  charset " << name << " = " << partitions[part]->getNSeq() << ";" << endl;
         start_site = end_site;
     }
     bool ok_model = true;

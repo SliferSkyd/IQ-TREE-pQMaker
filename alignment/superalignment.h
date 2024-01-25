@@ -310,6 +310,11 @@ public:
 	 */
     Alignment *concatenateAlignments();
 
+    void slitPartitionDir(string partition_dir, char *sequence_type,
+                                      InputType &intype, string model, bool remove_empty_seq, int num_processors);
+
+    void slitPartitionList(string partition_dir, char *sequence_type,
+                                      InputType &intype, string model, bool remove_empty_seq, int num_processors);
 
 };
 

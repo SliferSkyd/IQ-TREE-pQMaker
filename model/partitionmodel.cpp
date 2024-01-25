@@ -482,14 +482,15 @@ double PartitionModel::optimizeParameters(int fixed_len, bool write_info, double
 #endif
             double score;
             
-            if (opt_gamma_invar)
+            if (opt_gamma_invar) {
                 score = tree->at(part)->getModelFactory()->optimizeParametersGammaInvar(fixed_len,
                     write_info && verbose_mode >= VB_MED,
                     logl_epsilon/min(ntrees,10), gradient_epsilon/min(ntrees,10));
-            else
+            } else {
                 score = tree->at(part)->getModelFactory()->optimizeParameters(fixed_len,
                     write_info && verbose_mode >= VB_MED,
                     logl_epsilon/min(ntrees,10), gradient_epsilon/min(ntrees,10));
+            }
             tree_lhs[part] = score;
             //tree_lh += score;
 

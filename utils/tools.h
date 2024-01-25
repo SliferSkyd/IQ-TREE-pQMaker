@@ -2209,6 +2209,8 @@ public:
 
     /** z-score for detecting outlier nodes */
     double date_outlier;
+
+    int num_processors;
 };
 
 /**

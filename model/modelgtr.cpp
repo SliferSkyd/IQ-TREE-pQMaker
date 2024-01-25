@@ -554,7 +554,6 @@ void ModelGTR::setBounds(double *lower_bound, double *upper_bound, bool *bound_c
 
 double ModelGTR::optimizeParameters(double gradient_epsilon) {
 	int ndim = getNDim();
-	
 	// return if nothing to be optimized
 	if (ndim == 0) return 0.0;
     
