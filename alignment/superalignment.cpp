@@ -69,10 +69,7 @@ SuperAlignment::SuperAlignment(Params &params) : Alignment()
 void SuperAlignment::readFromParams(Params &params) {
     if (isDirectory(params.partition_file)) {
         // reading all files in the directory
-        slitPartitionDir(params.partition_file, params.sequence_type, params.intype, params.model_name, params.remove_empty_seq, params.num_processors);
-        if (params.partition_file[strlen(params.partition_file)-1] != '/')
-            strcat(params.partition_file, "/split/");
-        else strcat(params.partition_file, "split/");
+        strcpy(params.partition_file, slitPartitionDir(params.partition_file, params.sequence_type, params.intype, params.model_name, params.remove_empty_seq, params.num_processors, params.out_prefix).c_str());
         readPartitionDir(params.partition_file, params.sequence_type, params.intype, params.model_name, params.remove_empty_seq);
     } else if (strstr(params.partition_file, ",") != nullptr) {
         // reading all files in a comma-separated list
@@ -564,8 +561,8 @@ void SuperAlignment::readPartitionDir(string partition_dir, char *sequence_type,
     }    
 }
 
-void SuperAlignment::slitPartitionDir(string partition_dir, char *sequence_type,
-                                      InputType &intype, string model, bool remove_empty_seq, int num_processors) {
+string SuperAlignment::slitPartitionDir(string partition_dir, char *sequence_type,
+                                      InputType &intype, string model, bool remove_empty_seq, int num_processors, string out_prefix) {
     //    Params origin_params = params;
 
     StrVector filenames;
@@ -577,7 +574,11 @@ void SuperAlignment::slitPartitionDir(string partition_dir, char *sequence_type,
         outError("No file found in ", partition_dir);
     std::sort(filenames.begin(), filenames.end());
     cout << "Reading " << filenames.size() << " alignment files in directory " << partition_dir << endl;
-    
+
+    // clear old split directory    
+    string dir_split = out_prefix + (out_prefix.back() == '/' ? "" : "/") + "split/";
+    system(("rm -rf " + dir_split).c_str());
+
     for (auto it = filenames.begin(); it != filenames.end(); it++)
     {
         Alignment *part_aln;
@@ -613,8 +614,7 @@ void SuperAlignment::slitPartitionDir(string partition_dir, char *sequence_type,
 
     double average_cost = total_cost / num_processors;
 
-    string dir_split = dir + "split/";
-    remove(dir_split.c_str());
+    
     mkdir(dir_split.c_str(), 0777);
     for (int part = 0; part < partitions.size(); part++) {
         int upper_bound = average_cost / partitions[part]->getNSeq() / partitions[part]->getNStates();
@@ -627,6 +627,7 @@ void SuperAlignment::slitPartitionDir(string partition_dir, char *sequence_type,
         }
     }
     partitions.clear();
+    return dir_split;
 }
 
 void SuperAlignment::readPartitionList(string file_list, char *sequence_type,

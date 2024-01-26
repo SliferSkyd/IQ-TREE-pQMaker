@@ -310,11 +310,15 @@ public:
 	 */
     Alignment *concatenateAlignments();
 
-    void slitPartitionDir(string partition_dir, char *sequence_type,
-                                      InputType &intype, string model, bool remove_empty_seq, int num_processors);
+    /**
+     * split super-alignment into sub-alignments
+     * @return the directory containing sub-alignments
+     */
+    string slitPartitionDir(string partition_dir, char *sequence_type,
+                                      InputType &intype, string model, bool remove_empty_seq, int num_processors, string out_prefix);
 
-    void slitPartitionList(string partition_dir, char *sequence_type,
-                                      InputType &intype, string model, bool remove_empty_seq, int num_processors);
+    string slitPartitionList(string partition_dir, char *sequence_type,
+                                      InputType &intype, string model, bool remove_empty_seq, int num_processors, string out_prefix);
 
 };
 
