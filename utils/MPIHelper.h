@@ -27,9 +27,8 @@
 #include "utils/tools.h"
 #include "utils/checkpoint.h"
 
-#ifdef _IQTREE_MPI
+
 #include <mpi.h>
-#endif
 
 #define PROC_MASTER 0
 #define TREE_TAG 1 // Message contain trees

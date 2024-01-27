@@ -456,6 +456,44 @@ bool PartitionModel::isLinkedModel() {
     return Params::getInstance().link_alpha || (linked_models.size()>0);
 }
 
+void PartitionModel::checkMessage() {
+    if (!MPIHelper::getInstance().gotMessage() || !MPIHelper::getInstance().isMaster()) return;
+    PhyloSuperTree *stree = (PhyloSuperTree*)site_rate->getTree();
+    
+    MPI_Status status;
+    MPI_Recv(NULL, 0, MPI_INT, MPI_ANY_SOURCE, 0, MPI_COMM_WORLD, &status);
+    int sender = status.MPI_SOURCE;
+
+    schedule(sender);
+}
+
+int PartitionModel::request() {
+    PhyloSuperTree *stree = (PhyloSuperTree*)site_rate->getTree();
+    if (MPIHelper::getInstance().isMaster()) {
+        if (stree->proc_part_order.empty()) return -1;
+        int tree = stree->proc_part_order.back();
+        stree->proc_part_order.pop_back();
+    } else {
+        MPI_Send(NULL, 0, MPI_INT, 0, 0, MPI_COMM_WORLD);
+        int tree;
+        MPI_Recv(&tree, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        return tree;
+    }
+}
+
+void schedule(int proc) {
+    if (!MPIHelper::getInstance().isMaster()) return;
+    PhyloSuperTree *stree = (PhyloSuperTree*)site_rate->getTree();
+    if (stree->proc_part_order.empty()) {
+        int response = -1;
+        MPI_Send(&response, 1, MPI_INT, proc, 0, MPI_COMM_WORLD);
+        return;
+    }
+    int tree = stree->proc_part_order.back();
+    stree->proc_part_order.pop_back();
+    MPI_Send(&tree, 1, MPI_INT, proc, 0, MPI_COMM_WORLD);
+}
+
 double PartitionModel::optimizeParameters(int fixed_len, bool write_info, double logl_epsilon, double gradient_epsilon) {
     PhyloSuperTree *tree = (PhyloSuperTree*)site_rate->getTree();
     double prev_tree_lh = -DBL_MAX, tree_lh = 0.0;
@@ -467,21 +505,15 @@ double PartitionModel::optimizeParameters(int fixed_len, bool write_info, double
         tree_lhs = DoubleVector(ntrees, 0.0);
         if (tree->part_order.empty()) tree->computePartitionOrder();
 #ifdef _IQTREE_MPI
-        int proc_ntrees = tree->procSize();
-#endif
-
+        MPI_Barrier(MPI_COMM_WORLD);
+/*
 #ifdef _OPENMP
 #pragma omp parallel for reduction(+: tree_lh) schedule(dynamic) if(tree->num_threads > 1)
 #endif
-#ifdef _IQTREE_MPI
-        for (int i = 0; i < proc_ntrees; i++) {
-            int part = tree->proc_part_order[i];
-#else
-        for (int i = 0; i < ntrees; i++) {
-            int part = tree->part_order[i];
-#endif
-            double score;
-            
+*/
+        while (true) {
+            int part = request();
+            if (part == -1) break;
             if (opt_gamma_invar) {
                 score = tree->at(part)->getModelFactory()->optimizeParametersGammaInvar(fixed_len,
                     write_info && verbose_mode >= VB_MED,

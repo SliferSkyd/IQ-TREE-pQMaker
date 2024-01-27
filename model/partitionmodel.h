@@ -156,6 +156,9 @@ public:
     
     bool opt_gamma_invar;
     
+    void checkMessage();
+    int request();
+    void schedule(int proc);
 protected:
     
     /**

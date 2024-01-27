@@ -314,10 +314,10 @@ public:
      * split super-alignment into sub-alignments
      * @return the directory containing sub-alignments
      */
-    string slitPartitionDir(string partition_dir, char *sequence_type,
+    string splitPartitionDir(string partition_dir, char *sequence_type,
                                       InputType &intype, string model, bool remove_empty_seq, int num_processors, string out_prefix);
 
-    string slitPartitionList(string partition_dir, char *sequence_type,
+    string splitPartitionList(string partition_dir, char *sequence_type,
                                       InputType &intype, string model, bool remove_empty_seq, int num_processors, string out_prefix);
 
 };
