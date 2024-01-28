@@ -304,8 +304,10 @@ double PartitionModel::targetFunk(double x[]) {
 #endif
     for (auto e: results) res += e;
 
-    if (res == 0.0)
+    if (res == 0.0) {
+        assert(0 && "No partition has model ");
         outError("No partition has model ", model->getName());
+    }
     return res;
 }
 
@@ -456,6 +458,8 @@ bool PartitionModel::isLinkedModel() {
     return Params::getInstance().link_alpha || (linked_models.size()>0);
 }
 
+int numReceivedWorker = 0;
+
 void PartitionModel::checkMessage() {
     if (!MPIHelper::getInstance().gotMessage() || !MPIHelper::getInstance().isMaster()) return;
     PhyloSuperTree *stree = (PhyloSuperTree*)site_rate->getTree();
@@ -473,6 +477,7 @@ int PartitionModel::request() {
         if (stree->proc_part_order.empty()) return -1;
         int tree = stree->proc_part_order.back();
         stree->proc_part_order.pop_back();
+        return tree;
     } else {
         MPI_Send(NULL, 0, MPI_INT, 0, 0, MPI_COMM_WORLD);
         int tree;
@@ -481,12 +486,14 @@ int PartitionModel::request() {
     }
 }
 
-void schedule(int proc) {
+void PartitionModel::schedule(int proc) {
     if (!MPIHelper::getInstance().isMaster()) return;
     PhyloSuperTree *stree = (PhyloSuperTree*)site_rate->getTree();
     if (stree->proc_part_order.empty()) {
         int response = -1;
         MPI_Send(&response, 1, MPI_INT, proc, 0, MPI_COMM_WORLD);
+
+        ++numReceivedWorker;
         return;
     }
     int tree = stree->proc_part_order.back();
@@ -501,19 +508,32 @@ double PartitionModel::optimizeParameters(int fixed_len, bool write_info, double
     DoubleVector tree_lhs(ntrees, 0.0);
 
     for (int step = 0; step < Params::getInstance().model_opt_steps; step++) {
+        numReceivedWorker = 0;
+
         tree_lh = 0.0;
         tree_lhs = DoubleVector(ntrees, 0.0);
         if (tree->part_order.empty()) tree->computePartitionOrder();
+
+        for (int i = 0; i < tree->proc_part_order.size(); i++)
+            cout << tree->proc_part_order[i] << " \n"[i == tree->proc_part_order.size()-1];
+
 #ifdef _IQTREE_MPI
         MPI_Barrier(MPI_COMM_WORLD);
+#endif
 /*
 #ifdef _OPENMP
 #pragma omp parallel for reduction(+: tree_lh) schedule(dynamic) if(tree->num_threads > 1)
 #endif
 */
         while (true) {
+            while (MPIHelper::getInstance().isMaster() && MPIHelper::getInstance().gotMessage()) 
+                checkMessage();
+
             int part = request();
+            printf("Process %d, part %d\n", MPIHelper::getInstance().getProcessID(), part);
             if (part == -1) break;
+
+            double score;
             if (opt_gamma_invar) {
                 score = tree->at(part)->getModelFactory()->optimizeParametersGammaInvar(fixed_len,
                     write_info && verbose_mode >= VB_MED,
@@ -543,6 +563,18 @@ double PartitionModel::optimizeParameters(int fixed_len, bool write_info, double
 #endif // _IQTREE_MPI
         }
 
+        printf("Process %d\n", MPIHelper::getInstance().getProcessID());
+
+        if (MPIHelper::getInstance().isMaster()) {
+            while (numReceivedWorker < MPIHelper::getInstance().getNumProcesses() - 1) {
+                checkMessage();
+            }
+        }
+
+        tree->proc_part_order = tree->part_order;
+        for (int i = 0; i < tree->part_order.size(); i++)
+            cout << tree->proc_part_order[i] << " \n"[i == tree->part_order.size()-1];
+
         //return ModelFactory::optimizeParameters(fixed_len, write_info);
 #ifdef _IQTREE_MPI
         tree_lhs = MPIHelper::getInstance().sumProcs(tree_lhs);
@@ -561,9 +593,14 @@ double PartitionModel::optimizeParameters(int fixed_len, bool write_info, double
             tree_lh = optimizeLinkedAlpha(write_info, gradient_epsilon);
         }
 
+        MPI_Barrier(MPI_COMM_WORLD);
+
+        printf("Proc part order size: %d\n", tree->proc_part_order.size());      
+
         // optimize linked models
         if (!linked_models.empty()) {
             double new_tree_lh = optimizeLinkedModels(write_info, gradient_epsilon);
+            cout << tree_lh << " " << new_tree_lh << endl;
             ASSERT(new_tree_lh > tree_lh - 0.1);
             tree_lh = new_tree_lh;
         }
