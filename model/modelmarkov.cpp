@@ -899,6 +899,7 @@ bool ModelMarkov::getVariables(double *variables) {
 
 double ModelMarkov::targetFunk(double x[]) {
 	bool changed = getVariables(x);
+    // cout << changed <<'\n';
 
 	if (changed) {
 		decomposeRateMatrix();

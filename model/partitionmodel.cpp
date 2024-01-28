@@ -23,6 +23,8 @@
 #include "model/modelmarkov.h"
 #include "utils/MPIHelper.h"
 
+int numReceivedWorker = 0;
+
 PartitionModel::PartitionModel()
         : ModelFactory()
 {
@@ -278,31 +280,52 @@ double PartitionModel::targetFunk(double x[]) {
     PhyloSuperTree *tree = (PhyloSuperTree*)site_rate->getTree();
 
     double res = 0;
-    if (tree->part_order.empty()) tree->computePartitionOrder();
+    if (tree->proc_part_order_2.empty()) tree->proc_part_order_2 = tree->proc_part_order;
     DoubleVector results(tree->size());
 
-#ifdef _OPENMP
-#pragma omp parallel for reduction(+: res) schedule(dynamic) if(tree->num_threads > 1)
-#endif
-#ifdef _IQTREE_MPI
-    for (int j = 0; j < tree->procSize(); j++) {
-        int i = tree->proc_part_order[j];
-#else
-    for (int j = 0; j < tree->size(); j++) {
-        int i = tree->part_order[j];
-#endif
-        ModelSubst *part_model = tree->at(i)->getModel();
+// #ifdef _OPENMP
+// #pragma omp parallel for reduction(+: res) schedule(dynamic) if(tree->num_threads > 1)
+// #endif
+// #ifdef _IQTREE_MPI
+//     for (int j = 0; j < tree->procSize(); j++) {
+//         int i = tree->proc_part_order[j];
+// #else
+//     for (int j = 0; j < tree->size(); j++) {
+//         int i = tree->part_order[j];
+// #endif
+
+    #ifdef _IQTREE_MPI
+        MPI_Barrier(MPI_COMM_WORLD);
+    #endif
+
+    numReceivedWorker = 0;
+    while (true) {
+        while (MPIHelper::getInstance().isMaster() && MPIHelper::getInstance().gotMessage()) 
+            checkMessage();
+
+        int part = request();
+        // printf("Process %d, part %d\n", MPIHelper::getInstance().getProcessID(), part);
+        if (part == -1) break;
+
+        ModelSubst *part_model = tree->at(part)->getModel();
         if (part_model->getName() != model->getName())
             continue;
         bool fixed = part_model->fixParameters(false);
-        results[i] = part_model->targetFunk(x);
+        results[part] = part_model->targetFunk(x);
         part_model->fixParameters(fixed);
+    }
+
+    if (MPIHelper::getInstance().isMaster()) {
+        while (numReceivedWorker < MPIHelper::getInstance().getNumProcesses() - 1) {
+            checkMessage();
+        }
     }
 
 #ifdef _IQTREE_MPI
     results = MPIHelper::getInstance().sumProcs(results);
 #endif
     for (auto e: results) res += e;
+    // if (MPIHelper::getInstance().isMaster()) printf("%f\n", res);
 
     if (res == 0.0) {
         assert(0 && "No partition has model ");
@@ -458,8 +481,6 @@ bool PartitionModel::isLinkedModel() {
     return Params::getInstance().link_alpha || (linked_models.size()>0);
 }
 
-int numReceivedWorker = 0;
-
 void PartitionModel::checkMessage() {
     if (!MPIHelper::getInstance().gotMessage() || !MPIHelper::getInstance().isMaster()) return;
     PhyloSuperTree *stree = (PhyloSuperTree*)site_rate->getTree();
@@ -474,9 +495,9 @@ void PartitionModel::checkMessage() {
 int PartitionModel::request() {
     PhyloSuperTree *stree = (PhyloSuperTree*)site_rate->getTree();
     if (MPIHelper::getInstance().isMaster()) {
-        if (stree->proc_part_order.empty()) return -1;
-        int tree = stree->proc_part_order.back();
-        stree->proc_part_order.pop_back();
+        if (stree->proc_part_order_2.empty()) return -1;
+        int tree = stree->proc_part_order_2.back();
+        stree->proc_part_order_2.pop_back();
         return tree;
     } else {
         MPI_Send(NULL, 0, MPI_INT, 0, 0, MPI_COMM_WORLD);
@@ -489,15 +510,15 @@ int PartitionModel::request() {
 void PartitionModel::schedule(int proc) {
     if (!MPIHelper::getInstance().isMaster()) return;
     PhyloSuperTree *stree = (PhyloSuperTree*)site_rate->getTree();
-    if (stree->proc_part_order.empty()) {
+    if (stree->proc_part_order_2.empty()) {
         int response = -1;
         MPI_Send(&response, 1, MPI_INT, proc, 0, MPI_COMM_WORLD);
 
         ++numReceivedWorker;
         return;
     }
-    int tree = stree->proc_part_order.back();
-    stree->proc_part_order.pop_back();
+    int tree = stree->proc_part_order_2.back();
+    stree->proc_part_order_2.pop_back();
     MPI_Send(&tree, 1, MPI_INT, proc, 0, MPI_COMM_WORLD);
 }
 
@@ -512,10 +533,9 @@ double PartitionModel::optimizeParameters(int fixed_len, bool write_info, double
 
         tree_lh = 0.0;
         tree_lhs = DoubleVector(ntrees, 0.0);
-        if (tree->part_order.empty()) tree->computePartitionOrder();
+        if (tree->proc_part_order.empty()) tree->computePartitionOrder();
 
-        for (int i = 0; i < tree->proc_part_order.size(); i++)
-            cout << tree->proc_part_order[i] << " \n"[i == tree->proc_part_order.size()-1];
+        if (tree->proc_part_order_2.empty()) tree->proc_part_order_2 = tree->proc_part_order;
 
 #ifdef _IQTREE_MPI
         MPI_Barrier(MPI_COMM_WORLD);
@@ -571,9 +591,7 @@ double PartitionModel::optimizeParameters(int fixed_len, bool write_info, double
             }
         }
 
-        tree->proc_part_order = tree->part_order;
-        for (int i = 0; i < tree->part_order.size(); i++)
-            cout << tree->proc_part_order[i] << " \n"[i == tree->part_order.size()-1];
+        if (tree->proc_part_order_2.empty()) tree->proc_part_order_2 = tree->proc_part_order;
 
         //return ModelFactory::optimizeParameters(fixed_len, write_info);
 #ifdef _IQTREE_MPI
@@ -593,14 +611,11 @@ double PartitionModel::optimizeParameters(int fixed_len, bool write_info, double
             tree_lh = optimizeLinkedAlpha(write_info, gradient_epsilon);
         }
 
-        MPI_Barrier(MPI_COMM_WORLD);
-
-        printf("Proc part order size: %d\n", tree->proc_part_order.size());      
+        MPI_Barrier(MPI_COMM_WORLD);      
 
         // optimize linked models
         if (!linked_models.empty()) {
             double new_tree_lh = optimizeLinkedModels(write_info, gradient_epsilon);
-            cout << tree_lh << " " << new_tree_lh << endl;
             ASSERT(new_tree_lh > tree_lh - 0.1);
             tree_lh = new_tree_lh;
         }

@@ -359,6 +359,7 @@ public:
 
     /* partition ID sorted in descending order of computation cost for this process*/
     IntVector proc_part_order;
+    IntVector proc_part_order_2;
     int current_tree;
 
     /* number of trees for this process */
