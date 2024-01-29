@@ -662,10 +662,6 @@ void PhyloSuperTree::computePartitionOrder() {
         part_order[i] = id[i];
 
 #ifdef _IQTREE_MPI
-    if (MPIHelper::getInstance().isMaster()) {
-		proc_part_order = part_order;
-		reverse(proc_part_order.begin(), proc_part_order.end());
-	}
 	// computeProcPartitionOrder(cost);
 #endif
         
