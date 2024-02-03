@@ -155,10 +155,12 @@ public:
     unordered_map<string, ModelSubst*> linked_models;
     
     bool opt_gamma_invar;
+
     
-    pair<double, int> checkMessage();
-    int request();
-    void schedule(int proc);
+    int numReceivedWorker = 0;
+    int prevTree = -1;
+    double prevScore = 0.0;
+
 protected:
     
     /**

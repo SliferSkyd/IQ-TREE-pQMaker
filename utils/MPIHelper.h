@@ -26,7 +26,7 @@
 #include <vector>
 #include "utils/tools.h"
 #include "utils/checkpoint.h"
-
+#include "model/partitionmodel.h"
 
 #include <mpi.h>
 
@@ -181,6 +181,10 @@ public:
     vector<DoubleVector> gatherAllVectors(const vector<DoubleVector> &vts);
 #endif
 
+    pair<double, int> checkMessage();
+    int request();
+    void schedule(int proc);
+
     void increaseTreeSent(int inc = 1) {
         numTreeSent += inc;
     }
@@ -227,10 +231,16 @@ public:
 //        numNNISearch = 0;
     }
 
+    void setPartitionModel(PartitionModel *partitionModel) {
+        MPIHelper::partitionModel = partitionModel;
+    }
+
 private:
     int numTreeSent;
 
     int numTreeReceived;
+
+    PartitionModel *partitionModel;
 
 public:
     int getNumNNISearch() const {

@@ -23,10 +23,6 @@
 #include "model/modelmarkov.h"
 #include "utils/MPIHelper.h"
 
-int numReceivedWorker = 0;
-int prevTree = -1;
-double prevScore = 0.0;
-
 PartitionModel::PartitionModel()
         : ModelFactory()
 {
@@ -284,7 +280,11 @@ double PartitionModel::targetFunk(double x[]) {
     // if (!checked) printf("Process %d is here\n", MPIHelper::getInstance().getProcessID());
     if (tree->part_order.empty()) tree->computePartitionOrder();
     tree->proc_part_order.clear();
-    if (MPIHelper::getInstance().isMaster()) {
+
+#ifdef _IQTREE_MPI
+    if (MPIHelper::getInstance().isMaster()) 
+#endif
+    {
         tree->proc_part_order_2 = tree->part_order;
         reverse(tree->proc_part_order_2.begin(), tree->proc_part_order_2.end());
     }
@@ -312,13 +312,26 @@ double PartitionModel::targetFunk(double x[]) {
     prevScore = 0.0;
 
     while (true) {
+
+#ifdef _IQTREE_MPI
         while (MPIHelper::getInstance().isMaster() && MPIHelper::getInstance().gotMessage()) {
-            auto [prevScore, prevTree] = checkMessage();
+            auto [prevScore, prevTree] = MPIHelper::getInstance().checkMessage();
             if (prevTree < tree->part_order.size()) results[prevTree] = prevScore;
         }
+#endif
 
-        int part = request();
-        if (!checked) printf("Process %d, part %d\n", MPIHelper::getInstance().getProcessID(), part);
+
+        int part = -1;
+
+#ifdef _IQTREE_MPI
+        part = MPIHelper::getInstance().request();
+#else
+        if (tree->proc_part_order_2.size()) {
+            part = tree->proc_part_order_2.back();
+            tree->proc_part_order_2.pop_back();
+        }
+#endif
+
         if (part == -1) break;
 
         tree->proc_part_order.push_back(part);
@@ -329,20 +342,24 @@ double PartitionModel::targetFunk(double x[]) {
         bool fixed = part_model->fixParameters(false);
         // results[part] = part_model->targetFunk(x);
 
+#ifdef _IQTREE_MPI
         if (MPIHelper::getInstance().isMaster()) {
             results[part] = part_model->targetFunk(x);
         } else {
             prevScore = part_model->targetFunk(x);
             prevTree = part;
         }
-        part_model->fixParameters(fixed);
-    }
-
-    if (MPIHelper::getInstance().isMaster()) {
-        while (numReceivedWorker < MPIHelper::getInstance().getNumProcesses() - 1) {
-            auto [prevScore, prevTree] = checkMessage();
-            if (prevTree < tree->part_order.size()) results[prevTree] = prevScore;
+        
+        if (MPIHelper::getInstance().isMaster()) {
+            while (numReceivedWorker < MPIHelper::getInstance().getNumProcesses() - 1) {
+                auto [prevScore, prevTree] = MPIHelper::getInstance().checkMessage();
+                if (prevTree < tree->part_order.size()) results[prevTree] = prevScore;
+            }
         }
+#else 
+        results[part] = part_model->targetFunk(x);
+#endif
+        part_model->fixParameters(fixed);
     }
 
     if (!checked) checked = 1;
@@ -510,53 +527,6 @@ bool PartitionModel::isLinkedModel() {
     return Params::getInstance().link_alpha || (linked_models.size()>0);
 }
 
-pair<double, int> PartitionModel::checkMessage() {
-    if (!MPIHelper::getInstance().gotMessage() || !MPIHelper::getInstance().isMaster()) return {0, -1};
-    PhyloSuperTree *stree = (PhyloSuperTree*)site_rate->getTree();
-    
-    double score;
-    MPI_Status status;
-    MPI_Recv(&score, 1, MPI_DOUBLE, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
-    int sender = status.MPI_SOURCE;
-    int Tree = status.MPI_TAG;
-
-    if (!checked) cout << sender <<'\n';
-
-    schedule(sender);
-
-    return {score, Tree};
-}
-
-int PartitionModel::request() {
-    PhyloSuperTree *stree = (PhyloSuperTree*)site_rate->getTree();
-    if (MPIHelper::getInstance().isMaster()) {
-        if (stree->proc_part_order_2.empty()) return -1;
-        int tree = stree->proc_part_order_2.back();
-        stree->proc_part_order_2.pop_back();
-        return tree;
-    } else {
-        MPI_Send(&prevScore, 1, MPI_DOUBLE, 0, prevTree, MPI_COMM_WORLD);
-        int tree;
-        MPI_Recv(&tree, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-        return tree;
-    }
-}
-
-void PartitionModel::schedule(int proc) {
-    if (!MPIHelper::getInstance().isMaster()) return;
-    PhyloSuperTree *stree = (PhyloSuperTree*)site_rate->getTree();
-    if (stree->proc_part_order_2.empty()) {
-        int response = -1;
-        MPI_Send(&response, 1, MPI_INT, proc, 0, MPI_COMM_WORLD);
-
-        ++numReceivedWorker;
-        return;
-    }
-    int tree = stree->proc_part_order_2.back();
-    stree->proc_part_order_2.pop_back();
-    MPI_Send(&tree, 1, MPI_INT, proc, 0, MPI_COMM_WORLD);
-}
-
 double PartitionModel::optimizeParameters(int fixed_len, bool write_info, double logl_epsilon, double gradient_epsilon) {
     PhyloSuperTree *tree = (PhyloSuperTree*)site_rate->getTree();
     double prev_tree_lh = -DBL_MAX, tree_lh = 0.0;
@@ -564,7 +534,6 @@ double PartitionModel::optimizeParameters(int fixed_len, bool write_info, double
     DoubleVector tree_lhs(ntrees, 0.0);
 
     for (int step = 0; step < Params::getInstance().model_opt_steps; step++) {
-        // cout << "I'm heree\n";
         tree_lh = 0.0;
         tree_lhs = DoubleVector(ntrees, 0.0);
         
@@ -594,7 +563,7 @@ double PartitionModel::optimizeParameters(int fixed_len, bool write_info, double
         while (true) {
 #ifdef _IQTREE_MPI
             while (MPIHelper::getInstance().isMaster() && MPIHelper::getInstance().gotMessage()) {
-                auto [prevScore, prevTree] = checkMessage();
+                auto [prevScore, prevTree] = MPIHelper::getInstance().checkMessage();
                 if (prevTree < tree->part_order.size()) tree_lhs[prevTree] = prevScore;
             }
 #endif
@@ -602,7 +571,7 @@ double PartitionModel::optimizeParameters(int fixed_len, bool write_info, double
             int part = -1;
 
 #ifdef _IQTREE_MPI
-            part = request();
+            part = MPIHelper::getInstance().request();
 #else
             if (tree->proc_part_order_2.size()) {
                 part = tree->proc_part_order_2.back();
@@ -658,7 +627,7 @@ double PartitionModel::optimizeParameters(int fixed_len, bool write_info, double
 #ifdef _IQTREE_MPI
         if (MPIHelper::getInstance().isMaster()) {
             while (numReceivedWorker < MPIHelper::getInstance().getNumProcesses() - 1) {
-                auto [prevScore, prevTree] = checkMessage();
+                auto [prevScore, prevTree] = MPIHelper::getInstance().checkMessage();
                 if (prevTree < tree->part_order.size()) tree_lhs[prevTree] = prevScore;
             }
         }
@@ -686,7 +655,11 @@ double PartitionModel::optimizeParameters(int fixed_len, bool write_info, double
         // optimize linked models
         if (!linked_models.empty()) {
             double new_tree_lh = optimizeLinkedModels(write_info, gradient_epsilon);
-            if (MPIHelper::getInstance().isMaster()) {
+            
+#ifdef _IQTREE_MPI
+            if (MPIHelper::getInstance().isMaster()) 
+#endif
+            {
                 ASSERT(new_tree_lh > tree_lh - 0.1);
                 tree_lh = new_tree_lh;
             }

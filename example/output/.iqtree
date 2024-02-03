@@ -1,0 +1,134 @@
+IQ-TREE 2.0.6 built Feb  2 2024
+
+Partition file name: ../example/output/.sitelh
+Type of analysis: ModelFinder + tree reconstruction
+Random seed number: 746056
+
+REFERENCES
+----------
+
+To cite IQ-TREE please use:
+
+Bui Quang Minh, Heiko A. Schmidt, Olga Chernomor, Dominik Schrempf,
+Michael D. Woodhams, Arndt von Haeseler, and Robert Lanfear (2020)
+IQ-TREE 2: New models and efficient methods for phylogenetic inference
+in the genomic era. Mol. Biol. Evol., in press.
+https://doi.org/10.1093/molbev/msaa015
+
+To cite ModelFinder please use: 
+
+Subha Kalyaanamoorthy, Bui Quang Minh, Thomas KF Wong, Arndt von Haeseler,
+and Lars S Jermiin (2017) ModelFinder: Fast model selection for
+accurate phylogenetic estimates. Nature Methods, 14:587–589.
+https://doi.org/10.1038/nmeth.4285
+
+Since you used partition models please also cite:
+
+Olga Chernomor, Arndt von Haeseler, and Bui Quang Minh (2016)
+Terrace aware data structure for phylogenomic inference from
+supermatrices. Syst. Biol., 65:997-1008.
+https://doi.org/10.1093/sysbio/syw037
+
+SEQUENCE ALIGNMENT
+------------------
+
+Input data: 190 taxa with 15 partitions and 1470 total sites (93.3333% missing data)
+
+  ID  Name         Type	Seq	Site	Unique	Infor	Invar	Const
+   1  NSP6_01.phy  AA	16	98	41	14	77	77
+   2  NSP6_02.phy  AA	16	98	89	62	31	31
+   3  NSP6_03.phy  AA	15	98	39	11	78	78
+   4  NSP6_04.phy  AA	7	98	29	1	88	88
+   5  NSP6_05.phy  AA	16	98	43	17	76	76
+   6  NSP6_06.phy  AA	14	98	31	7	87	87
+   7  NSP6_07.phy  AA	12	98	29	1	88	88
+   8  NSP6_08.phy  AA	14	98	47	3	83	83
+   9  NSP6_09.phy  AA	16	98	37	8	81	81
+  10  NSP6_10.phy  AA	15	98	44	5	87	87
+  11  NSP6_11.phy  AA	14	98	32	4	85	85
+  12  NSP6_12.phy  AA	4	98	22	0	95	95
+  13  NSP6_13.phy  AA	14	98	29	6	89	89
+  14  NSP6_14.phy  AA	13	98	33	3	84	84
+  15  NSP6_15.phy  AA	4	98	24	0	94	94
+
+Column meanings:
+  Unique: Number of unique site patterns
+  Infor:  Number of parsimony-informative sites
+  Invar:  Number of invariant sites
+  Const:  Number of constant sites (can be subset of invariant sites)
+
+ModelFinder
+-----------
+
+Best-fit model according to BIC: JTT+G4:NSP6_01.phy,JTT+G4:NSP6_02.phy,JTT:NSP6_03.phy,JTT:NSP6_04.phy,JTT:NSP6_05.phy,JTT+I:NSP6_06.phy,JTT:NSP6_07.phy,JTT:NSP6_08.phy,JTT:NSP6_09.phy,JTT+G4:NSP6_10.phy,JTT:NSP6_11.phy,JTT+I:NSP6_12.phy,JTT+I:NSP6_13.phy,JTT:NSP6_14.phy,LG:NSP6_15.phy
+
+List of best-fit models per partition:
+
+  ID  Model                  LogL         AIC      w-AIC        AICc     w-AICc         BIC      w-BIC
+   1  JTT+G4             -488.259    1036.518 + 4.68e-310    1064.279 + 6.95e-310    1114.067 + 6.95e-310
+   2  JTT+G4             -949.492    1958.984 + 4.68e-310    1986.745 + 6.95e-310    2036.533 + 6.95e-310
+   3  JTT                -476.523    1007.047 + 4.68e-310    1028.647 + 6.95e-310    1076.841 + 6.95e-310
+   4  JTT                -372.102     766.205 + 4.68e-310     769.275 + 6.95e-310     794.640 + 6.95e-310
+   5  JTT                -469.884     997.769 + 4.68e-310    1023.357 + 6.95e-310    1072.733 + 6.95e-310
+   6  JTT+I              -404.964     861.929 + 4.68e-310     881.704 + 6.95e-310     929.138 + 6.95e-310
+   7  JTT                -376.211     794.421 + 4.68e-310     806.579 + 6.95e-310     848.706 + 6.95e-310
+   8  JTT                -398.532     847.064 + 4.68e-310     865.120 + 6.95e-310     911.689 + 6.95e-310
+   9  JTT                -430.597     919.194 + 4.68e-310     944.782 + 6.95e-310     994.158 + 6.95e-310
+  10  JTT+G4             -380.271     816.542 + 4.68e-310     840.079 + 6.95e-310     888.921 + 6.95e-310
+  11  JTT                -376.543     803.086 + 4.68e-310     821.142 + 6.95e-310     867.710 + 6.95e-310
+  12  JTT+I              -306.385     624.771 + 4.68e-310     625.694 + 6.95e-310     640.280 + 6.95e-310
+  13  JTT+I              -375.446     802.891 + 4.68e-310     822.666 + 6.95e-310     870.100 + 6.95e-310
+  14  JTT                -386.958     819.915 + 4.68e-310     834.834 + 6.95e-310     879.370 + 6.95e-310
+  15  LG                 -303.406     616.812 + 4.68e-310     617.464 + 6.95e-310     629.736 + 6.95e-310
+
+AIC, w-AIC   : Akaike information criterion scores and weights.
+AICc, w-AICc : Corrected AIC scores and weights.
+BIC, w-BIC   : Bayesian information criterion scores and weights.
+
+Plus signs denote the 95% confidence sets.
+Minus signs denote significant exclusion.
+
+SUBSTITUTION PROCESS
+--------------------
+
+Topology-unlinked partition model with separate substitution models and separate rates across sites
+
+  ID  Model         TreeLen  Parameters
+   1  JTT+G4         0.3387  JTT+G4{0.389572}
+   2  JTT+G4         2.0210  JTT+G4{1.45257}
+   3  JTT            0.2705  JTT
+   4  JTT            0.1132  JTT
+   5  JTT            0.3081  JTT
+   6  JTT+I          0.2037  JTT+I{0.818838}
+   7  JTT            0.1305  JTT
+   8  JTT            0.1853  JTT
+   9  JTT            0.2412  JTT
+  10  JTT+G4         0.1533  JTT+G4{0.365566}
+  11  JTT            0.1515  JTT
+  12  JTT+I          0.0552  JTT+I{0.949355}
+  13  JTT+I          0.1484  JTT+I{0.822737}
+  14  JTT            0.1629  JTT
+  15  LG             0.0415  LG
+
+MAXIMUM LIKELIHOOD TREE
+-----------------------
+
+Log-likelihood of the tree: -6466.0554 (s.e. 136.7657)
+Unconstrained log-likelihood (without tree): -4766.5262
+Number of free parameters (#branches + #model parameters): 341
+Akaike information criterion (AIC) score: 13614.1108
+Corrected Akaike information criterion (AICc) score: 13820.8874
+Bayesian information criterion (BIC) score: 15419.0298
+
+Total tree length (sum of branch lengths): 4.5250
+Sum of internal branch lengths: 2.6019 (57.4996% of tree length)
+
+Tree topologies are unlinked across partitions, thus no drawing will be displayed here
+
+TIME STAMP
+----------
+
+Date and time: Fri Feb  2 02:15:14 2024
+Total CPU time used: 44.35 seconds (0h:0m:44s)
+Total wall-clock time used: 45.74 seconds (0h:0m:45s)
+
