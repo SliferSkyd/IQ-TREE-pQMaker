@@ -4,8 +4,8 @@ Heiko Schmidt, Dominik Schrempf, Michael Woodhams.
 
 Host:    TURING (AVX2, FMA3, 6 GB RAM)
 Command: ./iqtree2-mpi -S ../example/test -nt 1 -pre ../example/output/ -redo -np 4 -mset LG,WAG,JTT -cmax 4
-Seed:    420339 (Using SPRNG - Scalable Parallel Random Number Generator)
-Time:    Sat Feb  3 16:42:44 2024
+Seed:    518622 (Using SPRNG - Scalable Parallel Random Number Generator)
+Time:    Mon Feb  5 15:00:07 2024
 Kernel:  AVX+FMA - 1 threads (16 CPU cores detected)
 MPI:     1 processes
 
@@ -653,24 +653,104 @@ WARNING: No parsimony-informative sites in partition NSP6_15.phy
 Unlinked 190 total sequences
 
 Creating fast initial parsimony tree by random order stepwise addition...
-0.014 seconds, parsimony score: 359 (based on 247 sites)
+0.012 seconds, parsimony score: 361 (based on 247 sites)
 Perform fast likelihood tree search using LG+I+G model...
 Estimate model parameters (epsilon = 5.000)
-ERROR: STACK TRACE FOR DEBUGGING:
-ERROR: 1   funcAbort()
-ERROR: 2   ()
-ERROR: 3   MPIHelper::request()
-ERROR: 4   PartitionModel::optimizeParameters(int, bool, double, double)
-ERROR: 5   IQTree::optimizeModelParameters[abi:cxx11](bool, double)
-ERROR: 6   computeFastMLTree(Params&, Alignment*, ModelCheckpoint&, ModelsBlock*, int&, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >)
-ERROR: 7   runModelFinder(Params&, IQTree&, ModelCheckpoint&)
-ERROR: 8   startTreeReconstruction(Params&, IQTree*&, ModelCheckpoint&)
-ERROR: 9   runPhyloAnalysis(Params&, Checkpoint*)
-ERROR: 10   main()
-ERROR: 11   __libc_start_main()
-ERROR: 12   _start()
-ERROR: 
-ERROR: *** IQ-TREE CRASHES WITH SIGNAL SEGMENTATION FAULT
-ERROR: *** For bug report please send to developers:
-ERROR: ***    Log file: ../example/output/.log
-ERROR: ***    Alignment files (if possible)
+Perform nearest neighbor interchange...
+Estimate model parameters (epsilon = 1.000)
+Estimate model parameters (epsilon = 1.000)
+Estimate model parameters (epsilon = 1.000)
+Estimate model parameters (epsilon = 1.000)
+Estimate model parameters (epsilon = 1.000)
+Estimate model parameters (epsilon = 1.000)
+Estimate model parameters (epsilon = 1.000)
+Estimate model parameters (epsilon = 1.000)
+Estimate model parameters (epsilon = 1.000)
+Estimate model parameters (epsilon = 1.000)
+Estimate model parameters (epsilon = 1.000)
+Estimate model parameters (epsilon = 1.000)
+Estimate model parameters (epsilon = 1.000)
+Estimate model parameters (epsilon = 1.000)
+Estimate model parameters (epsilon = 1.000)
+Log-likelihood: -6595.373
+Time for fast ML tree search: 1.157 seconds
+
+NOTE: ModelFinder requires 1 MB RAM!
+Selecting individual models for 15 charsets using BIC...
+ No. Model        Score       TreeLen     Charset
+   1 JTT+G4       1129.978    0.365       NSP6_01.phy
+   2 JTT+G4       2029.194    2.097       NSP6_02.phy
+   3 JTT          1076.841    0.270       NSP6_03.phy
+   4 JTT          794.640     0.113       NSP6_04.phy
+   5 JTT          1068.177    0.308       NSP6_05.phy
+   6 JTT+I        914.249     0.203       NSP6_06.phy
+   7 JTT          848.706     0.130       NSP6_07.phy
+   8 JTT          911.689     0.185       NSP6_08.phy
+   9 JTT          1010.284    0.252       NSP6_09.phy
+  10 JTT          878.441     0.152       NSP6_10.phy	0h:0m:6s (0h:0m:3s left)
+  11 JTT          866.881     0.152       NSP6_11.phy	0h:0m:7s (0h:0m:2s left)
+  12 JTT+I        640.280     0.053       NSP6_12.phy	0h:0m:7s (0h:0m:1s left)
+  13 JTT+I        870.966     0.147       NSP6_13.phy	0h:0m:8s (0h:0m:1s left)
+  14 JTT          879.370     0.163       NSP6_14.phy	0h:0m:9s (0h:0m:0s left)
+  15 LG           629.736     0.041       NSP6_15.phy	0h:0m:9s (0h:0m:0s left)
+Full partition model BIC score: 15470.170 (LnL: -6495.272  df:340)
+Partition information was printed to ../example/output/.best_scheme.nex
+Partition information in Raxml format was printed to ../example/output/.best_scheme
+
+All model information printed to ../example/output/.model.gz
+CPU time for ModelFinder: 10.278 seconds (0h:0m:10s)
+Wall-clock time for ModelFinder: 10.392 seconds (0h:0m:10s)
+WARNING: States(s) Y rarely appear in partition NSP6_01.phy and may cause numerical problems
+WARNING: States(s) Y rarely appear in partition NSP6_03.phy and may cause numerical problems
+NOTE: State(s) Y not present in partition NSP6_04.phy and thus removed from Markov process to prevent numerical problems
+WARNING: States(s) Y rarely appear in partition NSP6_08.phy and may cause numerical problems
+WARNING: States(s) Y rarely appear in partition NSP6_09.phy and may cause numerical problems
+WARNING: States(s) Y rarely appear in partition NSP6_11.phy and may cause numerical problems
+WARNING: States(s) Y rarely appear in partition NSP6_12.phy and may cause numerical problems
+WARNING: States(s) Y rarely appear in partition NSP6_13.phy and may cause numerical problems
+WARNING: States(s) Y rarely appear in partition NSP6_15.phy and may cause numerical problems
+NOTE: 1 states (see above) are not present and thus removed from Markov process to prevent numerical problems
+
+NOTE: 3 MB RAM (0 GB) is required!
+Estimate model parameters (epsilon = 0.100)
+Optimal log-likelihood: -6495.267
+--------------------------------------------------------------------
+|                SEPARATE TREE SEARCH FOR PARTITIONS               |
+--------------------------------------------------------------------
+Partition NSP6_02.phy / Iterations: 104 / LogL: -944.542 / Time: 0h:0m:14s
+Partition NSP6_05.phy / Iterations: 237 / LogL: -467.501 / Time: 0h:0m:17s
+Partition NSP6_10.phy / Iterations: 128 / LogL: -375.812 / Time: 0h:0m:19s
+Partition NSP6_08.phy / Iterations: 389 / LogL: -398.505 / Time: 0h:0m:23s
+Partition NSP6_01.phy / Iterations: 132 / LogL: -484.537 / Time: 0h:0m:31s
+Partition NSP6_09.phy / Iterations: 103 / LogL: -430.597 / Time: 0h:0m:33s
+Partition NSP6_03.phy / Iterations: 103 / LogL: -476.523 / Time: 0h:0m:34s
+Partition NSP6_11.phy / Iterations: 104 / LogL: -376.129 / Time: 0h:0m:35s
+Partition NSP6_06.phy / Iterations: 102 / LogL: -396.575 / Time: 0h:0m:37s
+Partition NSP6_14.phy / Iterations: 115 / LogL: -386.958 / Time: 0h:0m:37s
+Partition NSP6_13.phy / Iterations: 169 / LogL: -372.018 / Time: 0h:0m:39s
+Partition NSP6_07.phy / Iterations: 355 / LogL: -376.211 / Time: 0h:0m:41s
+Partition NSP6_04.phy / Iterations: 102 / LogL: -372.102 / Time: 0h:0m:41s
+Partition NSP6_15.phy / Iterations: 101 / LogL: -303.406 / Time: 0h:0m:41s
+Partition NSP6_12.phy / Iterations: 101 / LogL: -306.381 / Time: 0h:0m:41s
+--------------------------------------------------------------------
+|                    FINALIZING TREE SEARCH                        |
+--------------------------------------------------------------------
+Performs final model parameters optimization
+Estimate model parameters (epsilon = 0.010)
+Optimal log-likelihood: -6467.795
+Partition information was printed to ../example/output/.best_model.nex
+BEST SCORE FOUND : -6467.795
+Total tree length: 4.524
+
+Total number of iterations: 0
+CPU time used for tree search: 40.333 sec (0h:0m:40s)
+Wall-clock time used for tree search: 41.602 sec (0h:0m:41s)
+Total CPU time used: 40.496 sec (0h:0m:40s)
+Total wall-clock time used: 41.765 sec (0h:0m:41s)
+
+Analysis results written to: 
+  IQ-TREE report:                ../example/output/.iqtree
+  Maximum-likelihood tree:       ../example/output/.treefile
+  Screen log file:               ../example/output/.log
+
+Date and Time: Mon Feb  5 15:00:59 2024

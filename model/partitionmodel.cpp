@@ -28,6 +28,7 @@ PartitionModel::PartitionModel()
 {
 	linked_alpha = -1.0;
     opt_gamma_invar = false;
+    MPIHelper::getInstance().setPartitionModel(this);
 }
 
 PartitionModel::PartitionModel(Params &params, PhyloSuperTree *tree, ModelsBlock *models_block)
@@ -156,6 +157,7 @@ PartitionModel::PartitionModel(Params &params, PhyloSuperTree *tree, ModelsBlock
             }
         delete [] sum_state_counts;
     }
+    MPIHelper::getInstance().setPartitionModel(this);
 }
 
 void PartitionModel::setCheckpoint(Checkpoint *checkpoint) {

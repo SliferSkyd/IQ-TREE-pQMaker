@@ -16,19 +16,19 @@ begin sets;
   charset NSP6_14.phy = ../example/output/split/NSP6_14.phy: ;
   charset NSP6_15.phy = ../example/output/split/NSP6_15.phy: ;
   charpartition mymodels =
-    JTT+G4{0.389572}: NSP6_01.phy{0.338734},
-    JTT+G4{1.45257}: NSP6_02.phy{2.02101},
+    JTT+G4{0.389546}: NSP6_01.phy{0.338722},
+    JTT+G4{1.45212}: NSP6_02.phy{2.02119},
     JTT: NSP6_03.phy{0.270466},
     JTT: NSP6_04.phy{0.113152},
-    JTT: NSP6_05.phy{0.308067},
-    JTT+I{0.818838}: NSP6_06.phy{0.203677},
+    JTT: NSP6_05.phy{0.308068},
+    JTT+I{0.818348}: NSP6_06.phy{0.204112},
     JTT: NSP6_07.phy{0.130478},
-    JTT: NSP6_08.phy{0.185301},
+    JTT: NSP6_08.phy{0.185299},
     JTT: NSP6_09.phy{0.241224},
-    JTT+G4{0.365566}: NSP6_10.phy{0.153334},
+    JTT: NSP6_10.phy{0.152072},
     JTT: NSP6_11.phy{0.151546},
     JTT+I{0.949355}: NSP6_12.phy{0.0551607},
-    JTT+I{0.822737}: NSP6_13.phy{0.14845},
+    JTT+I{0.822752}: NSP6_13.phy{0.148427},
     JTT: NSP6_14.phy{0.162919},
     LG: NSP6_15.phy{0.0414961};
 end;

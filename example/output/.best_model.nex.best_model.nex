@@ -16,19 +16,19 @@ begin sets;
   charset NSP6_14.phy = ../example/output/split/NSP6_14.phy: ;
   charset NSP6_15.phy = ../example/output/split/NSP6_15.phy: ;
   charpartition mymodels =
-    GTR20+FO+G4{0.389572}: NSP6_01.phy{0.359078},
-    GTR20+FO+G4{1.45257}: NSP6_02.phy{2.58255},
-    GTR20+FO: NSP6_03.phy{0.284472},
-    GTR20+FO: NSP6_04.phy{0.118509},
-    GTR20+FO: NSP6_05.phy{0.325973},
-    GTR20+FO+I{0.818838}: NSP6_06.phy{0.189076},
-    GTR20+FO: NSP6_07.phy{0.1357},
-    GTR20+FO: NSP6_08.phy{0.191383},
-    GTR20+FO: NSP6_09.phy{0.247446},
-    GTR20+FO+G4{0.365566}: NSP6_10.phy{0.163368},
-    GTR20+FO: NSP6_11.phy{0.154302},
-    GTR20+FO+I{0.949355}: NSP6_12.phy{0.0493707},
-    GTR20+FO+I{0.822737}: NSP6_13.phy{0.154438},
-    GTR20+FO: NSP6_14.phy{0.166426},
-    GTR20+FO: NSP6_15.phy{0.0443152};
+    GTR20+FO+G4{0.389546}: NSP6_01.phy{0.360875},
+    GTR20+FO+G4{1.45212}: NSP6_02.phy{2.51821},
+    GTR20+FO: NSP6_03.phy{0.283869},
+    GTR20+FO: NSP6_04.phy{0.11827},
+    GTR20+FO: NSP6_05.phy{0.324288},
+    GTR20+FO+I{0.818348}: NSP6_06.phy{0.187829},
+    GTR20+FO: NSP6_07.phy{0.134845},
+    GTR20+FO: NSP6_08.phy{0.190234},
+    GTR20+FO: NSP6_09.phy{0.246686},
+    GTR20+FO: NSP6_10.phy{0.154322},
+    GTR20+FO: NSP6_11.phy{0.153711},
+    GTR20+FO+I{0.949355}: NSP6_12.phy{0.0478412},
+    GTR20+FO+I{0.822752}: NSP6_13.phy{0.154331},
+    GTR20+FO: NSP6_14.phy{0.166117},
+    GTR20+FO: NSP6_15.phy{0.0441706};
 end;

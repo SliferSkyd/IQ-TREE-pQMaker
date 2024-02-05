@@ -25,7 +25,7 @@ begin sets;
     JTT: NSP6_07.phy,
     JTT: NSP6_08.phy,
     JTT: NSP6_09.phy,
-    JTT+G4: NSP6_10.phy,
+    JTT: NSP6_10.phy,
     JTT: NSP6_11.phy,
     JTT+I: NSP6_12.phy,
     JTT+I: NSP6_13.phy,

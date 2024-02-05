@@ -306,7 +306,7 @@ pair<double, int> MPIHelper::checkMessage() {
 }
 
 int MPIHelper::request() {
-    PhyloSuperTree *stree = (PhyloSuperTree*)partitionModel->site_rate->getTree();
+    PhyloSuperTree *stree = (PhyloSuperTree*)(partitionModel->site_rate->getTree());
     if (isMaster()) {
         if (stree->proc_part_order_2.empty()) return -1;
         int tree = stree->proc_part_order_2.back();
