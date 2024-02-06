@@ -314,15 +314,6 @@ double PartitionModel::targetFunk(double x[]) {
     prevScore = 0.0;
 
     while (true) {
-
-#ifdef _IQTREE_MPI
-        while (MPIHelper::getInstance().isMaster() && MPIHelper::getInstance().gotMessage()) {
-            auto [prevScore, prevTree] = MPIHelper::getInstance().checkMessage();
-            if (prevTree < tree->part_order.size()) results[prevTree] = prevScore;
-        }
-#endif
-
-
         int part = -1;
 
 #ifdef _IQTREE_MPI
@@ -335,8 +326,14 @@ double PartitionModel::targetFunk(double x[]) {
 #endif
 
         if (part == -1) break;
-
         tree->proc_part_order.push_back(part);
+
+#ifdef _IQTREE_MPI
+        while (MPIHelper::getInstance().isMaster() && MPIHelper::getInstance().gotMessage()) {
+            auto [prevScore, prevTree] = MPIHelper::getInstance().checkMessage();
+            if (prevTree < tree->part_order.size()) results[prevTree] = prevScore;
+        }
+#endif
 
         ModelSubst *part_model = tree->at(part)->getModel();
         if (part_model->getName() != model->getName())
@@ -351,17 +348,17 @@ double PartitionModel::targetFunk(double x[]) {
             prevScore = part_model->targetFunk(x);
             prevTree = part;
         }
-        
-        if (MPIHelper::getInstance().isMaster()) {
-            while (numReceivedWorker < MPIHelper::getInstance().getNumProcesses() - 1) {
-                auto [prevScore, prevTree] = MPIHelper::getInstance().checkMessage();
-                if (prevTree < tree->part_order.size()) results[prevTree] = prevScore;
-            }
-        }
 #else 
         results[part] = part_model->targetFunk(x);
 #endif
         part_model->fixParameters(fixed);
+    }
+
+    if (MPIHelper::getInstance().isMaster()) {
+        while (numReceivedWorker < MPIHelper::getInstance().getNumProcesses() - 1) {
+            auto [prevScore, prevTree] = MPIHelper::getInstance().checkMessage();
+            if (prevTree < tree->part_order.size()) results[prevTree] = prevScore;
+        }
     }
 
     if (!checked) checked = 1;
@@ -563,13 +560,6 @@ double PartitionModel::optimizeParameters(int fixed_len, bool write_info, double
 #endif
 */
         while (true) {
-#ifdef _IQTREE_MPI
-            while (MPIHelper::getInstance().isMaster() && MPIHelper::getInstance().gotMessage()) {
-                auto [prevScore, prevTree] = MPIHelper::getInstance().checkMessage();
-                if (prevTree < tree->part_order.size()) tree_lhs[prevTree] = prevScore;
-            }
-#endif
-
             int part = -1;
 
 #ifdef _IQTREE_MPI
@@ -583,6 +573,13 @@ double PartitionModel::optimizeParameters(int fixed_len, bool write_info, double
 
             if (part == -1) break;
             tree->proc_part_order.push_back(part);
+
+#ifdef _IQTREE_MPI
+            while (MPIHelper::getInstance().isMaster() && MPIHelper::getInstance().gotMessage()) {
+                auto [prevScore, prevTree] = MPIHelper::getInstance().checkMessage();
+                if (prevTree < tree->part_order.size()) tree_lhs[prevTree] = prevScore;
+            }
+#endif
 
             double score;
             if (opt_gamma_invar) {
