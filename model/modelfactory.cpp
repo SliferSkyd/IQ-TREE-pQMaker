@@ -42,6 +42,7 @@
 #include <string>
 #include "utils/timeutil.h"
 #include "nclextra/myreader.h"
+#include "../utils/MPIHelper.h"
 #include <sstream>
 
 string::size_type findSubStr(string &name, string sub1, string sub2) {
@@ -1232,6 +1233,7 @@ double ModelFactory::optimizeParameters(int fixed_len, bool write_info,
                                         double logl_epsilon, double gradient_epsilon) {
     ASSERT(model);
     ASSERT(site_rate);
+    // cout << "22:10 08-02-2024\n";
 
 //    double defaultEpsilon = logl_epsilon;
 
@@ -1246,16 +1248,16 @@ double ModelFactory::optimizeParameters(int fixed_len, bool write_info,
     cur_lh = tree->computeLikelihood();
     tree->setCurScore(cur_lh);
     if (verbose_mode >= VB_MED || write_info) {
-    int p = -1;
+        int p = -1;
 
-    // SET precision to 17 (temporarily)
-    if (verbose_mode >= VB_DEBUG) p = cout.precision(17);
+        // SET precision to 17 (temporarily)
+        if (verbose_mode >= VB_DEBUG) p = cout.precision(17);
 
-    // PRINT Log-Likelihood
-    cout << "1. Initial log-likelihood: " << cur_lh << endl;
+        // PRINT Log-Likelihood
+        cout << "1. Initial log-likelihood: " << cur_lh << endl;
 
-    // RESTORE previous precision
-    if (verbose_mode >= VB_DEBUG) cout.precision(p);
+        // RESTORE previous precision
+        if (verbose_mode >= VB_DEBUG) cout.precision(p);
 
         if (verbose_mode >= VB_MAX) {
             tree->printTree(cout);
@@ -1270,6 +1272,13 @@ double ModelFactory::optimizeParameters(int fixed_len, bool write_info,
     }
     // ---------------------------
 
+#ifdef _IQTREE_MPI
+        while (MPIHelper::getInstance().isMaster() && MPIHelper::getInstance().gotMessage()) {
+            auto [prevScore, prevTree] = MPIHelper::getInstance().checkMessage();
+            if (prevTree >= 0 && prevTree < 15) 
+                MPIHelper::getInstance().tree_lhs[prevTree] = prevScore;
+        }
+#endif
 
     int i;
     //bool optimize_rate = true;
@@ -1287,6 +1296,14 @@ double ModelFactory::optimizeParameters(int fixed_len, bool write_info,
             new_lh = cur_lh;
 
         new_lh = optimizeParametersOnly(i, gradient_epsilon, new_lh);
+
+#ifdef _IQTREE_MPI
+        while (MPIHelper::getInstance().isMaster() && MPIHelper::getInstance().gotMessage()) {
+            auto [prevScore, prevTree] = MPIHelper::getInstance().checkMessage();
+            if (prevTree >= 0 && prevTree < 15) 
+                MPIHelper::getInstance().tree_lhs[prevTree] = prevScore;
+        }
+#endif
 
         if (new_lh == 0.0) {
             if (fixed_len == BRLEN_OPTIMIZE)

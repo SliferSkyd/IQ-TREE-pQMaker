@@ -209,6 +209,8 @@ private:
     int numProcesses;
 
 public:
+    DoubleVector tree_lhs;
+    
     int getNumTreeReceived() const {
         return numTreeReceived;
     }

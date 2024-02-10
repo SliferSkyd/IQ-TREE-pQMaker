@@ -288,8 +288,6 @@ vector<DoubleVector> MPIHelper::gatherAllVectors(const vector<DoubleVector> &vts
 
 #endif
 
-
-
 pair<double, int> MPIHelper::checkMessage() {
     if (!gotMessage() || !isMaster()) return {0, -1};
     PhyloSuperTree *stree = (PhyloSuperTree*)partitionModel->site_rate->getTree();

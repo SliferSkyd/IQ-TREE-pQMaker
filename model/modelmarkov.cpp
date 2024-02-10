@@ -22,6 +22,7 @@
 #include <string.h>
 #include "modelliemarkov.h"
 #include "modelunrest.h"
+#include "../utils/MPIHelper.h"
 #include <Eigen/Eigenvalues>
 #include <unsupported/Eigen/MatrixFunctions>
 using namespace Eigen;
@@ -908,6 +909,12 @@ double ModelMarkov::targetFunk(double x[]) {
 //        if (nondiagonalizable) // matrix is ill-formed
 //            return 1.0e+30;
 	}
+
+    while (MPIHelper::getInstance().isMaster() && MPIHelper::getInstance().gotMessage()) {
+        auto [prevScore, prevTree] = MPIHelper::getInstance().checkMessage();
+        if (prevTree >= 0 && prevTree < 15) 
+            MPIHelper::getInstance().tree_lhs[prevTree] = prevScore;
+    }
 
     // avoid numerical issue if state_freq is too small
     for (int i = 0; i < num_states; i++)
