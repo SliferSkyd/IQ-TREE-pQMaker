@@ -69,8 +69,8 @@ SuperAlignment::SuperAlignment(Params &params) : Alignment()
 void SuperAlignment::readFromParams(Params &params) {
     if (isDirectory(params.partition_file)) {
         // reading all files in the directory
-        string partition_dir = splitPartitionDir(params.partition_file, params.sequence_type, params.intype, params.model_name, params.remove_empty_seq, params.num_processors, params.out_prefix).c_str();
-        params.partition_file = (char*) partition_dir.c_str();
+        // string partition_dir = splitPartitionDir(params.partition_file, params.sequence_type, params.intype, params.model_name, params.remove_empty_seq, params.num_processors, params.out_prefix).c_str();
+        // params.partition_file = (char*) partition_dir.c_str();
         readPartitionDir(params.partition_file, params.sequence_type, params.intype, params.model_name, params.remove_empty_seq);
     } else if (strstr(params.partition_file, ",") != nullptr) {
         // reading all files in a comma-separated list
