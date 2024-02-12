@@ -330,9 +330,7 @@ double PartitionModel::targetFunk(double x[]) {
 
 #ifdef _IQTREE_MPI
         while (MPIHelper::getInstance().isMaster() && MPIHelper::getInstance().gotMessage()) {
-            auto [prevScore, prevTree] = MPIHelper::getInstance().checkMessage();
-            if (prevTree >= 0 && prevTree < tree->part_order.size()) 
-                MPIHelper::getInstance().tree_lhs[prevTree] = prevScore;
+            MPIHelper::getInstance().responeRequest();
         }
 #endif
 
@@ -357,9 +355,7 @@ double PartitionModel::targetFunk(double x[]) {
 
     if (MPIHelper::getInstance().isMaster()) {
         while (numReceivedWorker < MPIHelper::getInstance().getNumProcesses() - 1) {
-            auto [prevScore, prevTree] = MPIHelper::getInstance().checkMessage();
-            if (prevTree >= 0 && prevTree < tree->part_order.size()) 
-                MPIHelper::getInstance().tree_lhs[prevTree] = prevScore;
+            MPIHelper::getInstance().responeRequest();
         }
     }
 
@@ -577,11 +573,9 @@ double PartitionModel::optimizeParameters(int fixed_len, bool write_info, double
             tree->proc_part_order.push_back(part);
 
 #ifdef _IQTREE_MPI
-        while (MPIHelper::getInstance().isMaster() && MPIHelper::getInstance().gotMessage()) {
-            auto [prevScore, prevTree] = MPIHelper::getInstance().checkMessage();
-            if (prevTree >= 0 && prevTree < tree->part_order.size()) 
-                MPIHelper::getInstance().tree_lhs[prevTree] = prevScore;
-        }
+            while (MPIHelper::getInstance().isMaster() && MPIHelper::getInstance().gotMessage()) {
+                MPIHelper::getInstance().responeRequest();
+            }
 #endif
 
             double score;
@@ -629,9 +623,7 @@ double PartitionModel::optimizeParameters(int fixed_len, bool write_info, double
 #ifdef _IQTREE_MPI
         if (MPIHelper::getInstance().isMaster()) {
             while (numReceivedWorker < MPIHelper::getInstance().getNumProcesses() - 1) {
-                auto [prevScore, prevTree] = MPIHelper::getInstance().checkMessage();
-                if (prevTree >= 0 && prevTree < tree->part_order.size()) 
-                    MPIHelper::getInstance().tree_lhs[prevTree] = prevScore;
+                MPIHelper::getInstance().responeRequest();
             }
         }
 #endif

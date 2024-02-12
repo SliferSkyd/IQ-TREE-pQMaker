@@ -1273,11 +1273,9 @@ double ModelFactory::optimizeParameters(int fixed_len, bool write_info,
     // ---------------------------
 
 #ifdef _IQTREE_MPI
-        while (MPIHelper::getInstance().isMaster() && MPIHelper::getInstance().gotMessage()) {
-            auto [prevScore, prevTree] = MPIHelper::getInstance().checkMessage();
-            if (prevTree >= 0 && prevTree < 15) 
-                MPIHelper::getInstance().tree_lhs[prevTree] = prevScore;
-        }
+    while (MPIHelper::getInstance().isMaster() && MPIHelper::getInstance().gotMessage()) {
+        MPIHelper::getInstance().responeRequest();
+    }
 #endif
 
     int i;
@@ -1299,9 +1297,7 @@ double ModelFactory::optimizeParameters(int fixed_len, bool write_info,
 
 #ifdef _IQTREE_MPI
         while (MPIHelper::getInstance().isMaster() && MPIHelper::getInstance().gotMessage()) {
-            auto [prevScore, prevTree] = MPIHelper::getInstance().checkMessage();
-            if (prevTree >= 0 && prevTree < 15) 
-                MPIHelper::getInstance().tree_lhs[prevTree] = prevScore;
+            MPIHelper::getInstance().responeRequest();
         }
 #endif
 

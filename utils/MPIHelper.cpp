@@ -288,7 +288,7 @@ vector<DoubleVector> MPIHelper::gatherAllVectors(const vector<DoubleVector> &vts
 
 #endif
 
-pair<double, int> MPIHelper::checkMessage() {
+pair<double, int> MPIHelper::responeRequest() {
     if (!gotMessage() || !isMaster()) return {0, -1};
     PhyloSuperTree *stree = (PhyloSuperTree*)partitionModel->site_rate->getTree();
     
@@ -299,6 +299,10 @@ pair<double, int> MPIHelper::checkMessage() {
     int Tree = status.MPI_TAG;
 
     schedule(sender);
+
+    if (Tree >= 0 && Tree < stree->part_order.size()) {
+        tree_lhs[Tree] = score;
+    }
 
     return {score, Tree};
 }

@@ -911,9 +911,7 @@ double ModelMarkov::targetFunk(double x[]) {
 	}
 
     while (MPIHelper::getInstance().isMaster() && MPIHelper::getInstance().gotMessage()) {
-        auto [prevScore, prevTree] = MPIHelper::getInstance().checkMessage();
-        if (prevTree >= 0 && prevTree < 15) 
-            MPIHelper::getInstance().tree_lhs[prevTree] = prevScore;
+        MPIHelper::getInstance().responeRequest();
     }
 
     // avoid numerical issue if state_freq is too small

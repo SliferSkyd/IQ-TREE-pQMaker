@@ -181,7 +181,8 @@ public:
     vector<DoubleVector> gatherAllVectors(const vector<DoubleVector> &vts);
 #endif
 
-    pair<double, int> checkMessage();
+    // New functions for new MPI-QMaker idea: Dynamic Scheduling
+    pair<double, int> responeRequest();
     int request();
     void schedule(int proc);
 
