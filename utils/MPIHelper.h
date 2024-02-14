@@ -91,7 +91,7 @@ public:
     int countSameHost();
 
     /** @return true if got any message from another process */
-    bool gotMessage();
+    bool gotMessage(int tag = MPI_ANY_TAG);
 
     /** wrapper for MPI_Send a string
         @param str string to send

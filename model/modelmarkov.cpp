@@ -910,10 +910,6 @@ double ModelMarkov::targetFunk(double x[]) {
 //            return 1.0e+30;
 	}
 
-    while (MPIHelper::getInstance().isMaster() && MPIHelper::getInstance().gotMessage()) {
-        MPIHelper::getInstance().responeRequest();
-    }
-
     // avoid numerical issue if state_freq is too small
     for (int i = 0; i < num_states; i++)
         if (state_freq[i] < 0 || (state_freq[i] > 0 && state_freq[i] < Params::getInstance().min_state_freq)) {

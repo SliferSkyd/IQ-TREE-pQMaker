@@ -82,14 +82,14 @@ int MPIHelper::countSameHost() {
 #endif
 }
 
-bool MPIHelper::gotMessage() {
+bool MPIHelper::gotMessage(int tag) {
     // Check for incoming messages
     if (getNumProcesses() == 1)
         return false;
 #ifdef _IQTREE_MPI
     int flag = 0;
     MPI_Status status;
-    MPI_Iprobe(MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &flag, &status);
+    MPI_Iprobe(MPI_ANY_SOURCE, tag, MPI_COMM_WORLD, &flag, &status);
     if (flag)
         return true;
     else
@@ -287,7 +287,7 @@ vector<DoubleVector> MPIHelper::gatherAllVectors(const vector<DoubleVector> &vts
 }
 
 pair<double, int> MPIHelper::responeRequest() {
-    if (!gotMessage() || !isMaster()) return {0, -1};
+    if (!gotMessage(SCORE_TAG) || !isMaster()) return {0, -1};
     PhyloSuperTree *stree = (PhyloSuperTree*)partitionModel->site_rate->getTree();
     
     // double score;
@@ -348,10 +348,10 @@ void MPIHelper::schedule(int proc) {
         ++partitionModel->numReceivedWorker;
         return;
     }
+    
     stringstream tree;
     tree << stree->proc_part_order_2.back();
     stree->proc_part_order_2.pop_back();
-
     string message = tree.str();
     // MPI_Send(&tree, 1, MPI_INT, proc, SUPERTREE_TAG, MPI_COMM_WORLD);
     sendString(message, proc, SUPERTREE_TAG);
