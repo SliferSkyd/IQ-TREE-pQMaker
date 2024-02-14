@@ -22,7 +22,7 @@
 #include <string.h>
 #include "modelliemarkov.h"
 #include "modelunrest.h"
-#include "../utils/MPIHelper.h"
+#include "utils/MPIHelper.h"
 #include <Eigen/Eigenvalues>
 #include <unsupported/Eigen/MatrixFunctions>
 using namespace Eigen;

@@ -42,7 +42,7 @@
 #include <string>
 #include "utils/timeutil.h"
 #include "nclextra/myreader.h"
-#include "../utils/MPIHelper.h"
+#include "utils/MPIHelper.h"
 #include <sstream>
 
 string::size_type findSubStr(string &name, string sub1, string sub2) {

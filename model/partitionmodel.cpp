@@ -569,7 +569,9 @@ double PartitionModel::optimizeParameters(int fixed_len, bool write_info, double
             }
 #endif
 
-            if (part == -1) break;
+            if (part == -1) {
+                break;
+            }
             tree->proc_part_order.push_back(part);
 
 #ifdef _IQTREE_MPI

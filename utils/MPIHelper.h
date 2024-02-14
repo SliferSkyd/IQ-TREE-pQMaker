@@ -23,6 +23,7 @@
 #define MPIHELPER_H
 
 #include <string>
+#include <sstream>
 #include <vector>
 #include "utils/tools.h"
 #include "utils/checkpoint.h"
@@ -36,6 +37,8 @@
 #define BOOT_TAG 3 // Message to please send bootstrap trees
 #define BOOT_TREE_TAG 4 // bootstrap tree tag
 #define LOGL_CUTOFF_TAG 5 // send logl_cutoff for ultrafast bootstrap
+#define SCORE_TAG 6 // send score in MPI QMaker
+#define SUPERTREE_TAG 7 // send tree id in MPI QMaker
 
 using namespace std;
 
