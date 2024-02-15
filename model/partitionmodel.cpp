@@ -537,7 +537,6 @@ double PartitionModel::optimizeParameters(int fixed_len, bool write_info, double
 #ifdef _IQTREE_MPI
             part = MPIHelper::getInstance().request();
 #else
-            assert(0);
             if (tree->proc_part_order_2.size()) {
                 part = tree->proc_part_order_2.back();
                 tree->proc_part_order_2.pop_back();
@@ -620,7 +619,6 @@ double PartitionModel::optimizeParameters(int fixed_len, bool write_info, double
         // optimize linked models
         if (!linked_models.empty()) {
             double new_tree_lh = optimizeLinkedModels(write_info, gradient_epsilon);
-            
             ASSERT(new_tree_lh > tree_lh - 0.1);
             tree_lh = new_tree_lh;
         }
