@@ -2590,7 +2590,6 @@ int PhyloTree::getNBranchParameters(int brlen_type) {
 }
 
 void PhyloTree::optimizeOneBranch(PhyloNode *node1, PhyloNode *node2, bool clearLH, int maxNRStep) {
-
     if (rooted && (node1 == root || node2 == root))
         return; // does not optimize virtual branch from root
         

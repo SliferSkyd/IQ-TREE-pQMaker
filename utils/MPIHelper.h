@@ -185,7 +185,7 @@ public:
 #endif
 
     // New functions for new MPI-QMaker idea: Dynamic Scheduling
-    pair<double, int> responeRequest();
+    void responeRequest();
     int request();
     void schedule(int proc);
 

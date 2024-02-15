@@ -1310,6 +1310,9 @@ double ModelFactory::optimizeParameters(int fixed_len, bool write_info,
             }
             break;
         }
+        while (MPIHelper::getInstance().isMaster() && MPIHelper::getInstance().gotMessage()) {
+            MPIHelper::getInstance().responeRequest();
+        }
         if (verbose_mode >= VB_MED) {
             model->writeInfo(cout);
             site_rate->writeInfo(cout);

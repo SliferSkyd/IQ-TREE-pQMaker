@@ -1,20 +1,20 @@
 #nexus
 begin sets;
-  charset NSP6_01.phy = ../example/output/split/NSP6_01.phy: ;
-  charset NSP6_02.phy = ../example/output/split/NSP6_02.phy: ;
-  charset NSP6_03.phy = ../example/output/split/NSP6_03.phy: ;
-  charset NSP6_04.phy = ../example/output/split/NSP6_04.phy: ;
-  charset NSP6_05.phy = ../example/output/split/NSP6_05.phy: ;
-  charset NSP6_06.phy = ../example/output/split/NSP6_06.phy: ;
-  charset NSP6_07.phy = ../example/output/split/NSP6_07.phy: ;
-  charset NSP6_08.phy = ../example/output/split/NSP6_08.phy: ;
-  charset NSP6_09.phy = ../example/output/split/NSP6_09.phy: ;
-  charset NSP6_10.phy = ../example/output/split/NSP6_10.phy: ;
-  charset NSP6_11.phy = ../example/output/split/NSP6_11.phy: ;
-  charset NSP6_12.phy = ../example/output/split/NSP6_12.phy: ;
-  charset NSP6_13.phy = ../example/output/split/NSP6_13.phy: ;
-  charset NSP6_14.phy = ../example/output/split/NSP6_14.phy: ;
-  charset NSP6_15.phy = ../example/output/split/NSP6_15.phy: ;
+  charset NSP6_01.phy = ../example/test/NSP6_01.phy: ;
+  charset NSP6_02.phy = ../example/test/NSP6_02.phy: ;
+  charset NSP6_03.phy = ../example/test/NSP6_03.phy: ;
+  charset NSP6_04.phy = ../example/test/NSP6_04.phy: ;
+  charset NSP6_05.phy = ../example/test/NSP6_05.phy: ;
+  charset NSP6_06.phy = ../example/test/NSP6_06.phy: ;
+  charset NSP6_07.phy = ../example/test/NSP6_07.phy: ;
+  charset NSP6_08.phy = ../example/test/NSP6_08.phy: ;
+  charset NSP6_09.phy = ../example/test/NSP6_09.phy: ;
+  charset NSP6_10.phy = ../example/test/NSP6_10.phy: ;
+  charset NSP6_11.phy = ../example/test/NSP6_11.phy: ;
+  charset NSP6_12.phy = ../example/test/NSP6_12.phy: ;
+  charset NSP6_13.phy = ../example/test/NSP6_13.phy: ;
+  charset NSP6_14.phy = ../example/test/NSP6_14.phy: ;
+  charset NSP6_15.phy = ../example/test/NSP6_15.phy: ;
   charpartition mymodels =
     JTT+G4: NSP6_01.phy,
     JTT+G4: NSP6_02.phy,
@@ -25,7 +25,7 @@ begin sets;
     JTT: NSP6_07.phy,
     JTT: NSP6_08.phy,
     JTT: NSP6_09.phy,
-    JTT: NSP6_10.phy,
+    JTT+G4: NSP6_10.phy,
     JTT: NSP6_11.phy,
     JTT+I: NSP6_12.phy,
     JTT+I: NSP6_13.phy,

@@ -860,7 +860,8 @@ bool ModelMarkov::getVariables(double *variables) {
 //        }
 //        return changed;
 //    }
-
+    while (MPIHelper::getInstance().gotMessage()) MPIHelper::getInstance().responeRequest();
+    
 	if (is_reversible && freq_type == FREQ_ESTIMATE) nrate -= (num_states-1);
 	if (nrate > 0) {
 		for (i = 0; i < nrate; i++)
@@ -895,12 +896,12 @@ bool ModelMarkov::getVariables(double *variables) {
 //			}
 //		state_freq[highest_freq_state] = 1.0/sum;
 	}
-	return changed;
+    while (MPIHelper::getInstance().gotMessage()) MPIHelper::getInstance().responeRequest();
+    return changed;
 }
 
 double ModelMarkov::targetFunk(double x[]) {
 	bool changed = getVariables(x);
-    // cout << changed <<'\n';
 
 	if (changed) {
 		decomposeRateMatrix();
@@ -911,20 +912,21 @@ double ModelMarkov::targetFunk(double x[]) {
 	}
 
     // avoid numerical issue if state_freq is too small
-    for (int i = 0; i < num_states; i++)
+    for (int i = 0; i < num_states; i++) {
         if (state_freq[i] < 0 || (state_freq[i] > 0 && state_freq[i] < Params::getInstance().min_state_freq)) {
             //outWarning("Weird state_freq[" + convertIntToString(i) + "]=" + convertDoubleToString(state_freq[i]));
             return 1.0e+30;
         }
+    }
 
 //    if (!is_reversible) {
 //        for (int i = 0; i < num_states; i++)
 //            if (state_freq[i] < MIN_FREQUENCY)
 //                return 1.0e+30;
 //    }
-
-	return -phylo_tree->computeLikelihood();
-
+    
+    while (MPIHelper::getInstance().gotMessage()) MPIHelper::getInstance().responeRequest();
+    return -phylo_tree->computeLikelihood();
 }
 
 bool ModelMarkov::isUnstableParameters() {
@@ -1188,6 +1190,7 @@ void ModelMarkov::decomposeRateMatrix(){
     }
     
     if (num_params == -1) {
+        assert(0);
         // reversible model
 		// manual compute eigenvalues/vectors for F81-style model
 		eigenvalues[0] = 0.0;
@@ -1381,7 +1384,8 @@ void ModelMarkov::decomposeRateMatrix(){
 }
 
 void ModelMarkov::decomposeRateMatrixRev() {
-
+    while (MPIHelper::getInstance().gotMessage()) MPIHelper::getInstance().responeRequest();
+    
     int i, j, k;
     // general reversible model
     double **rate_matrix = new double*[num_states];
@@ -1404,6 +1408,7 @@ void ModelMarkov::decomposeRateMatrixRev() {
             rate_matrix[i][i] = 0.0;
         }
     }
+    while (MPIHelper::getInstance().gotMessage()) MPIHelper::getInstance().responeRequest();
     /* eigensystem of 1 PAM rate matrix */
     eigensystem_sym(rate_matrix, state_freq, eigenvalues, eigenvectors, inv_eigenvectors, num_states);
     //eigensystem(rate_matrix, state_freq, eigenvalues, eigenvectors, inv_eigenvectors, num_states);
