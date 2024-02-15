@@ -330,7 +330,13 @@ double PartitionModel::targetFunk(double x[]) {
         bool fixed = part_model->fixParameters(false);
         results[part] = part_model->targetFunk(x);
         part_model->fixParameters(fixed);
-        while (MPIHelper::getInstance().gotMessage()) MPIHelper::getInstance().responeRequest();
+
+#ifdef _IQTREE_MPI
+        while (MPIHelper::getInstance().isMaster() && MPIHelper::getInstance().gotMessage(REQUEST_TAG)) {
+            MPIHelper::getInstance().responeRequest();
+        }
+#endif
+
     }
 
     if (MPIHelper::getInstance().isMaster()) {
@@ -550,7 +556,7 @@ double PartitionModel::optimizeParameters(int fixed_len, bool write_info, double
             }
 
 #ifdef _IQTREE_MPI
-            while (MPIHelper::getInstance().isMaster() && MPIHelper::getInstance().gotMessage()) {
+            while (MPIHelper::getInstance().isMaster() && MPIHelper::getInstance().gotMessage(REQUEST_TAG)) {
                 MPIHelper::getInstance().responeRequest();
             }
 #endif

@@ -860,14 +860,19 @@ bool ModelMarkov::getVariables(double *variables) {
 //        }
 //        return changed;
 //    }
-    while (MPIHelper::getInstance().gotMessage()) MPIHelper::getInstance().responeRequest();
-    
+
 	if (is_reversible && freq_type == FREQ_ESTIMATE) nrate -= (num_states-1);
 	if (nrate > 0) {
 		for (i = 0; i < nrate; i++)
 			changed |= (rates[i] != variables[i+1]);
 		memcpy(rates, variables+1, nrate * sizeof(double));
 	}
+
+#ifdef _IQTREE_MPI
+    while (MPIHelper::getInstance().isMaster() && MPIHelper::getInstance().gotMessage(REQUEST_TAG)) {
+        MPIHelper::getInstance().responeRequest();
+    }
+#endif 
 
 	if (is_reversible && freq_type == FREQ_ESTIMATE) {
         // 2015-09-07: relax the sum of state_freq to be 1, this will be done at the end of optimization
@@ -896,7 +901,13 @@ bool ModelMarkov::getVariables(double *variables) {
 //			}
 //		state_freq[highest_freq_state] = 1.0/sum;
 	}
-    while (MPIHelper::getInstance().gotMessage()) MPIHelper::getInstance().responeRequest();
+
+#ifdef _IQTREE_MPI
+    while (MPIHelper::getInstance().isMaster() && MPIHelper::getInstance().gotMessage(REQUEST_TAG)) {
+        MPIHelper::getInstance().responeRequest();
+    }
+#endif
+    
     return changed;
 }
 
@@ -905,7 +916,14 @@ double ModelMarkov::targetFunk(double x[]) {
 
 	if (changed) {
 		decomposeRateMatrix();
-		ASSERT(phylo_tree);
+
+#ifdef _IQTREE_MPI
+        while (MPIHelper::getInstance().isMaster() && MPIHelper::getInstance().gotMessage(REQUEST_TAG)) {
+            MPIHelper::getInstance().responeRequest();
+        }
+#endif
+
+        ASSERT(phylo_tree);
 		phylo_tree->clearAllPartialLH();
 //        if (nondiagonalizable) // matrix is ill-formed
 //            return 1.0e+30;
@@ -924,8 +942,13 @@ double ModelMarkov::targetFunk(double x[]) {
 //            if (state_freq[i] < MIN_FREQUENCY)
 //                return 1.0e+30;
 //    }
+
+#ifdef _IQTREE_MPI
+    while (MPIHelper::getInstance().isMaster() && MPIHelper::getInstance().gotMessage(REQUEST_TAG)) {
+        MPIHelper::getInstance().responeRequest();
+    }
+#endif
     
-    while (MPIHelper::getInstance().gotMessage()) MPIHelper::getInstance().responeRequest();
     return -phylo_tree->computeLikelihood();
 }
 
@@ -1384,8 +1407,6 @@ void ModelMarkov::decomposeRateMatrix(){
 }
 
 void ModelMarkov::decomposeRateMatrixRev() {
-    while (MPIHelper::getInstance().gotMessage()) MPIHelper::getInstance().responeRequest();
-    
     int i, j, k;
     // general reversible model
     double **rate_matrix = new double*[num_states];
@@ -1408,7 +1429,13 @@ void ModelMarkov::decomposeRateMatrixRev() {
             rate_matrix[i][i] = 0.0;
         }
     }
-    while (MPIHelper::getInstance().gotMessage()) MPIHelper::getInstance().responeRequest();
+
+#ifdef _IQTREE_MPI
+    while (MPIHelper::getInstance().isMaster() && MPIHelper::getInstance().gotMessage(REQUEST_TAG)) {
+        MPIHelper::getInstance().responeRequest();
+    }
+#endif
+
     /* eigensystem of 1 PAM rate matrix */
     eigensystem_sym(rate_matrix, state_freq, eigenvalues, eigenvectors, inv_eigenvectors, num_states);
     //eigensystem(rate_matrix, state_freq, eigenvalues, eigenvectors, inv_eigenvectors, num_states);

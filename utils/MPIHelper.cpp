@@ -287,19 +287,19 @@ vector<DoubleVector> MPIHelper::gatherAllVectors(const vector<DoubleVector> &vts
 }
 
 void MPIHelper::responeRequest() {
-    if (!isMaster() || !gotMessage(SCORE_TAG)) return;
-    PhyloSuperTree *stree = (PhyloSuperTree*)partitionModel->site_rate->getTree();
-    
+    if (!isMaster()) return;
+
     double score;
     MPI_Status status;
-    MPI_Recv(&score, 1, MPI_DOUBLE, MPI_ANY_SOURCE, SCORE_TAG, MPI_COMM_WORLD, &status);
+    MPI_Recv(&score, 1, MPI_DOUBLE, MPI_ANY_SOURCE, REQUEST_TAG, MPI_COMM_WORLD, &status);
     int sender = status.MPI_SOURCE;
 
     schedule(sender);
 }
 
 int MPIHelper::request() {
-    PhyloSuperTree *stree = (PhyloSuperTree*)(partitionModel->site_rate->getTree());
+    PhyloSuperTree *stree = (PhyloSuperTree *)(partitionModel->site_rate->getTree());
+
     if (isMaster()) {
         if (stree->proc_part_order_2.empty()) return -1;
         int tree = stree->proc_part_order_2.back();
@@ -307,7 +307,7 @@ int MPIHelper::request() {
         return tree;
     } else {
         double tmp;
-        MPI_Send(&tmp, 1, MPI_DOUBLE, PROC_MASTER, SCORE_TAG, MPI_COMM_WORLD);
+        MPI_Send(&tmp, 1, MPI_DOUBLE, PROC_MASTER, REQUEST_TAG, MPI_COMM_WORLD);
 
         int tree;
         MPI_Recv(&tree, 1, MPI_INT, PROC_MASTER, SUPERTREE_TAG, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
@@ -317,16 +317,20 @@ int MPIHelper::request() {
 
 void MPIHelper::schedule(int proc) {
     if (!isMaster()) return;
+
     PhyloSuperTree *stree = (PhyloSuperTree*)(partitionModel->site_rate->getTree());
+    
     if (stree->proc_part_order_2.empty()) {
-        int response = -1;
-        MPI_Send(&response, 1, MPI_INT, proc, SUPERTREE_TAG, MPI_COMM_WORLD);
         ++partitionModel->numReceivedWorker;
-        return;
+        int response = -1;
+        
+        MPI_Send(&response, 1, MPI_INT, proc, SUPERTREE_TAG, MPI_COMM_WORLD);
+    } else {
+        int tree = stree->proc_part_order_2.back();
+        stree->proc_part_order_2.pop_back();
+
+        MPI_Send(&tree, 1, MPI_INT, proc, SUPERTREE_TAG, MPI_COMM_WORLD);
     }
-    int tree = stree->proc_part_order_2.back();
-    stree->proc_part_order_2.pop_back();
-    MPI_Send(&tree, 1, MPI_INT, proc, SUPERTREE_TAG, MPI_COMM_WORLD);
 }
 
 #endif

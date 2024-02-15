@@ -37,7 +37,7 @@
 #define BOOT_TAG 3 // Message to please send bootstrap trees
 #define BOOT_TREE_TAG 4 // bootstrap tree tag
 #define LOGL_CUTOFF_TAG 5 // send logl_cutoff for ultrafast bootstrap
-#define SCORE_TAG 6 // send score in MPI QMaker
+#define REQUEST_TAG 6 // send request in MPI QMaker
 #define SUPERTREE_TAG 7 // send tree id in MPI QMaker
 
 using namespace std;
@@ -182,12 +182,12 @@ public:
                                 5 5 5 5 5
      */
     vector<DoubleVector> gatherAllVectors(const vector<DoubleVector> &vts);
-#endif
 
     // New functions for new MPI-QMaker idea: Dynamic Scheduling
     void responeRequest();
     int request();
     void schedule(int proc);
+#endif
 
     void increaseTreeSent(int inc = 1) {
         numTreeSent += inc;
@@ -213,8 +213,6 @@ private:
     int numProcesses;
 
 public:
-    DoubleVector tree_lhs;
-    
     int getNumTreeReceived() const {
         return numTreeReceived;
     }
