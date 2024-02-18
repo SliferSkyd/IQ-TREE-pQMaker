@@ -287,30 +287,15 @@ vector<DoubleVector> MPIHelper::gatherAllVectors(const vector<DoubleVector> &vts
 }
 
 pair<double, int> MPIHelper::responeRequest() {
-    if (!gotMessage(SCORE_TAG) || !isMaster()) return {0, -1};
+    if (!gotMessage(REQUEST_TAG) || !isMaster()) return {0, -1};
     PhyloSuperTree *stree = (PhyloSuperTree*)partitionModel->site_rate->getTree();
-    
-    // double score;
-    // MPI_Status status;
-    // MPI_Recv(&score, 1, MPI_DOUBLE, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
-    // int sender = status.MPI_SOURCE;
-    // int Tree = status.MPI_TAG;
 
     string message;
-    int sender = recvString(message, MPI_ANY_SOURCE, SCORE_TAG);
-    int Tree;
-    double score;
-
-    stringstream in(message);
-    in >> score >> Tree;
+    int sender = recvString(message, MPI_ANY_SOURCE, REQUEST_TAG);
 
     schedule(sender);
 
-    if (Tree >= 0 && Tree < stree->part_order.size()) {
-        tree_lhs[Tree] = score;
-    }
-
-    return {score, Tree};
+    return {0, -1};
 }
 
 int MPIHelper::request() {
@@ -322,13 +307,11 @@ int MPIHelper::request() {
         return tree;
     } else {
         // MPI_Send(&partitionModel->prevScore, 1, MPI_DOUBLE, PROC_MASTER, partitionModel->prevTree, MPI_COMM_WORLD);
-        stringstream out;
-        out << partitionModel->prevScore << " " << partitionModel->prevTree;
-        string message = out.str();
-        sendString(message, PROC_MASTER, SCORE_TAG);
+        string message = "?";
+        sendString(message, PROC_MASTER, REQUEST_TAG);
 
         string treePos;
-        // MPI_Recv(&tree, 1, MPI_INT, PROC_MASTER, SCORE_TAG, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        // MPI_Recv(&tree, 1, MPI_INT, PROC_MASTER, REQUEST_TAG, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
         recvString(treePos, PROC_MASTER, SUPERTREE_TAG);
         
         return stoi(treePos);
@@ -339,13 +322,10 @@ void MPIHelper::schedule(int proc) {
     if (!isMaster()) return;
     PhyloSuperTree *stree = (PhyloSuperTree*)(partitionModel->site_rate->getTree());
     if (stree->proc_part_order_2.empty()) {
-        // int response = -1;
-        // MPI_Send(&response, 1, MPI_INT, proc, 0, MPI_COMM_WORLD);
-
         string message = "-1";
         sendString(message, proc, SUPERTREE_TAG);
 
-        ++partitionModel->numReceivedWorker;
+        increaseStopSent();
         return;
     }
     

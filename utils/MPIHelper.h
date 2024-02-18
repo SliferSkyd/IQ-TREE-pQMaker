@@ -37,7 +37,7 @@
 #define BOOT_TAG 3 // Message to please send bootstrap trees
 #define BOOT_TREE_TAG 4 // bootstrap tree tag
 #define LOGL_CUTOFF_TAG 5 // send logl_cutoff for ultrafast bootstrap
-#define SCORE_TAG 6 // send score in MPI QMaker
+#define REQUEST_TAG 6 // send score in MPI QMaker
 #define SUPERTREE_TAG 7 // send tree id in MPI QMaker
 
 using namespace std;
@@ -182,12 +182,36 @@ public:
                                 5 5 5 5 5
      */
     vector<DoubleVector> gatherAllVectors(const vector<DoubleVector> &vts);
-#endif
 
+private:
+    PartitionModel *partitionModel;
+
+public:
     // New functions for new MPI-QMaker idea: Dynamic Scheduling
+    /**
+     * @return <score, id of assigned tree>
+    */
     pair<double, int> responeRequest();
+    /**
+     * @return ID of tree, -1 if there's no tree
+    */
     int request();
     void schedule(int proc);
+
+#endif
+
+private:
+    int numStopSent; // use to send stop to other processes
+public:
+    void increaseStopSent(int inc = 1) {
+        numStopSent += inc;
+    }
+    void setNumStopSent(int num = 0) {
+        numStopSent = num;
+    }
+    int getNumStopSent() {
+        return numStopSent;
+    }
 
     void increaseTreeSent(int inc = 1) {
         numTreeSent += inc;
@@ -213,7 +237,6 @@ private:
     int numProcesses;
 
 public:
-    DoubleVector tree_lhs;
     
     int getNumTreeReceived() const {
         return numTreeReceived;
@@ -245,8 +268,6 @@ private:
     int numTreeSent;
 
     int numTreeReceived;
-
-    PartitionModel *partitionModel;
 
 public:
     int getNumNNISearch() const {

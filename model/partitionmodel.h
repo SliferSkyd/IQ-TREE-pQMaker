@@ -156,11 +156,6 @@ public:
     
     bool opt_gamma_invar;
 
-    
-    int numReceivedWorker = 0;
-    int prevTree = -1;
-    double prevScore = 0.0;
-
 protected:
     
     /**
