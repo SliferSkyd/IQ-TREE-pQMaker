@@ -315,14 +315,15 @@ double PartitionModel::targetFunk(double x[]) {
 #ifdef _IQTREE_MPI
         part = MPIHelper::getInstance().request();
 #else
-        assert(0);
         if (tree->proc_part_order_2.size()) {
             part = tree->proc_part_order_2.back();
             tree->proc_part_order_2.pop_back();
         }
 #endif
 
-        if (part == -1) break;
+        if (part == -1) {
+            break;
+        }
 
         ModelSubst *part_model = tree->at(part)->getModel();
         if (part_model->getName() != model->getName())
@@ -338,15 +339,14 @@ double PartitionModel::targetFunk(double x[]) {
 #endif
 
     }
-
+    
+#ifdef _IQTREE_MPI
     if (MPIHelper::getInstance().isMaster()) {
         while (numReceivedWorker < MPIHelper::getInstance().getNumProcesses() - 1) {
             MPIHelper::getInstance().responeRequest();
         }
     }
     MPI_Barrier(MPI_COMM_WORLD);
-    
-#ifdef _IQTREE_MPI
     results = MPIHelper::getInstance().sumProcs(results);
 #endif
     for (auto e: results) res += e;
