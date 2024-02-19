@@ -1273,8 +1273,11 @@ double ModelFactory::optimizeParameters(int fixed_len, bool write_info,
     // ---------------------------
 
 #ifdef _IQTREE_MPI
-    while (MPIHelper::getInstance().isMaster() && MPIHelper::getInstance().gotMessage(REQUEST_TAG)) {
-        MPIHelper::getInstance().responeRequest();
+    #pragma omp critical
+    {
+        while (MPIHelper::getInstance().isMaster() && MPIHelper::getInstance().gotMessage(REQUEST_TAG)) {
+            MPIHelper::getInstance().responeRequest();
+        }
     }
 #endif
 
@@ -1296,8 +1299,11 @@ double ModelFactory::optimizeParameters(int fixed_len, bool write_info,
         new_lh = optimizeParametersOnly(i, gradient_epsilon, new_lh);
 
 #ifdef _IQTREE_MPI
-        while (MPIHelper::getInstance().isMaster() && MPIHelper::getInstance().gotMessage(REQUEST_TAG)) {
-            MPIHelper::getInstance().responeRequest();
+        #pragma omp critical
+        {
+            while (MPIHelper::getInstance().isMaster() && MPIHelper::getInstance().gotMessage(REQUEST_TAG)) {
+                MPIHelper::getInstance().responeRequest();
+            }
         }
 #endif
 
@@ -1312,8 +1318,11 @@ double ModelFactory::optimizeParameters(int fixed_len, bool write_info,
         }
 
 #ifdef _IQTREE_MPI
-        while (MPIHelper::getInstance().isMaster() && MPIHelper::getInstance().gotMessage(REQUEST_TAG)) {
-            MPIHelper::getInstance().responeRequest();
+        #pragma omp critical
+        {
+            while (MPIHelper::getInstance().isMaster() && MPIHelper::getInstance().gotMessage(REQUEST_TAG)) {
+                MPIHelper::getInstance().responeRequest();
+            }
         }
 #endif
         if (verbose_mode >= VB_MED) {

@@ -292,9 +292,6 @@ double PartitionModel::targetFunk(double x[]) {
     double res = 0;
     DoubleVector results(tree->size(), 0.0);
 
-// #ifdef _OPENMP
-// #pragma omp parallel for reduction(+: res) schedule(dynamic) if(tree->num_threads > 1)
-// #endif
 // #ifdef _IQTREE_MPI
 //     for (int j = 0; j < tree->procSize(); j++) {
 //         int i = tree->proc_part_order[j];
@@ -308,7 +305,11 @@ double PartitionModel::targetFunk(double x[]) {
     // #endif
 
     numReceivedWorker = 0;
-
+/*
+#ifdef _OPENMP
+#pragma omp parallel for reduction(+: res) schedule(dynamic) if(tree->num_threads > 1)
+#endif
+*/
     while (true) {
         int part = -1;
 
@@ -337,7 +338,6 @@ double PartitionModel::targetFunk(double x[]) {
             MPIHelper::getInstance().responeRequest();
         }
 #endif
-
     }
     
 #ifdef _IQTREE_MPI
@@ -532,11 +532,11 @@ double PartitionModel::optimizeParameters(int fixed_len, bool write_info, double
 // #ifdef _IQTREE_MPI
 //         MPI_Barrier(MPI_COMM_WORLD);
 // #endif
-/*
+
 #ifdef _OPENMP
 #pragma omp parallel for reduction(+: tree_lh) schedule(dynamic) if(tree->num_threads > 1)
 #endif
-*/
+        for (int j = 0; j < ntrees; j++) {
         while (true) {
             int part = -1;
 
@@ -548,7 +548,7 @@ double PartitionModel::optimizeParameters(int fixed_len, bool write_info, double
                 tree->proc_part_order_2.pop_back();
             }
 #endif
-
+            printf("Process %d got partition %d\n", MPIHelper::getInstance().getProcessID(), part);
             if (part == -1) {
                 break;
             } else {
@@ -556,8 +556,12 @@ double PartitionModel::optimizeParameters(int fixed_len, bool write_info, double
             }
 
 #ifdef _IQTREE_MPI
-            while (MPIHelper::getInstance().isMaster() && MPIHelper::getInstance().gotMessage(REQUEST_TAG)) {
-                MPIHelper::getInstance().responeRequest();
+            
+            #pragma omp critical
+            {
+                while (MPIHelper::getInstance().isMaster() && MPIHelper::getInstance().gotMessage(REQUEST_TAG)) {
+                    MPIHelper::getInstance().responeRequest();
+                }
             }
 #endif
 
@@ -592,6 +596,7 @@ double PartitionModel::optimizeParameters(int fixed_len, bool write_info, double
                      << " / LogL: " << score << endl;
             }
 #endif // _IQTREE_MPI
+        }
         }
 
 #ifdef _IQTREE_MPI
