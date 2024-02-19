@@ -1122,6 +1122,7 @@ void parseArg(int argc, char *argv[], Params &params) {
     params.date_replicates = 0;
     params.clock_stddev = -1.0;
     params.date_outlier = -1.0;
+    params.opqmaker = false; // defaut use pQMaker or QMaker
     
     params.matrix_exp_technique = MET_EIGEN3LIB_DECOMPOSITION;
 
@@ -1167,7 +1168,8 @@ void parseArg(int argc, char *argv[], Params &params) {
 #endif
 				continue;
 			}
-			if (strcmp(argv[cnt], "-v0") == 0) {
+
+            if (strcmp(argv[cnt], "-v0") == 0) {
 				verbose_mode = VB_QUIET;
 				continue;
 			}
@@ -3804,20 +3806,6 @@ void parseArg(int argc, char *argv[], Params &params) {
                 }
 				continue;
 			}
-
-            if (strcmp(argv[cnt], "-np") == 0) {
-				cnt++;
-				if (cnt >= argc)
-				throw "Use -np <num_processors|AUTO>";
-                if (iEquals(argv[cnt], "AUTO"))
-                    params.num_processors = 0;
-                else {
-                    params.num_processors = convert_int(argv[cnt]);
-                    if (params.num_processors < 1)
-                        throw "At least 1 processor please";
-                }
-				continue;
-			}
             
             if (strcmp(argv[cnt], "-ntmax") == 0 || strcmp(argv[cnt], "--threads-max") == 0) {
                 cnt++;
@@ -4155,6 +4143,26 @@ void parseArg(int argc, char *argv[], Params &params) {
                 if (cnt >= argc)
                     throw "Use --date-options <extra_options_for_dating_method>";
                 params.dating_options = argv[cnt];
+                continue;
+            }
+
+            if (strcmp(argv[cnt], "-opqmaker") == 0 || strcmp(argv[cnt], "--opqmaker") == 0) {
+                params.opqmaker = true;
+                continue;
+            }
+
+            if (strcmp(argv[cnt], "-split-msa") == 0) {
+                cnt++;
+                if (cnt >= argc)
+                    throw "Use -split-msa <num_processors|AUTO>";
+                if (iEquals(argv[cnt], "AUTO"))
+                    params.num_processors = 0;
+                else
+                {
+                    params.num_processors = convert_int(argv[cnt]);
+                    if (params.num_processors < 1)
+                        throw "At least 1 processor please";
+                }
                 continue;
             }
 

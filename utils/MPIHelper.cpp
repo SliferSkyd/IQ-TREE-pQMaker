@@ -321,11 +321,10 @@ int MPIHelper::request() {
 void MPIHelper::schedule(int proc) {
     if (!isMaster()) return;
     PhyloSuperTree *stree = (PhyloSuperTree*)(partitionModel->site_rate->getTree());
+    
     if (stree->proc_part_order_2.empty()) {
         string message = "-1";
         sendString(message, proc, SUPERTREE_TAG);
-
-        increaseStopSent();
         return;
     }
     

@@ -552,6 +552,17 @@ private:
 public:
 
     /**
+     * Number of process to run MPI
+     * use to detect number of part of msa to split
+    */
+    int num_processors;
+    
+    /**
+     * Option to run opQMaker instead of pQMaker
+    */
+    bool opqmaker;
+
+    /**
     *  Fast and accurate optimiation for alpha and p_invar
     */
     bool fai;
@@ -2209,8 +2220,6 @@ public:
 
     /** z-score for detecting outlier nodes */
     double date_outlier;
-
-    int num_processors;
 };
 
 /**

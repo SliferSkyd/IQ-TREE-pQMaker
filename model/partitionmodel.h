@@ -179,6 +179,11 @@ private:
         Synchronize tree branch lengths optimized in multiple processes
      */
     void syncBranchLengths();
+
+    /**
+     * Workers send message to master to notify that it stop
+    */
+    void sendStopMessage();
 #endif
 };
 
