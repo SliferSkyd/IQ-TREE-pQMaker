@@ -288,7 +288,7 @@ vector<DoubleVector> MPIHelper::gatherAllVectors(const vector<DoubleVector> &vts
 
 void MPIHelper::responeRequest() {
     if (!isMaster()) return;
-    printf("Master received request\n");
+    if (!gotMessage(REQUEST_TAG)) return;
     double score;
     MPI_Status status;
     MPI_Recv(&score, 1, MPI_DOUBLE, MPI_ANY_SOURCE, REQUEST_TAG, MPI_COMM_WORLD, &status);

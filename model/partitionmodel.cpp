@@ -305,15 +305,16 @@ double PartitionModel::targetFunk(double x[]) {
     // #endif
 
     numReceivedWorker = 0;
-/*
+
 #ifdef _OPENMP
 #pragma omp parallel for reduction(+: res) schedule(dynamic) if(tree->num_threads > 1)
 #endif
-*/
+    for (int i = 0; i < 1; ++i) {
     while (true) {
         int part = -1;
 
 #ifdef _IQTREE_MPI
+        #pragma omp critical
         part = MPIHelper::getInstance().request();
 #else
         if (tree->proc_part_order_2.size()) {
@@ -334,10 +335,14 @@ double PartitionModel::targetFunk(double x[]) {
         part_model->fixParameters(fixed);
 
 #ifdef _IQTREE_MPI
-        while (MPIHelper::getInstance().isMaster() && MPIHelper::getInstance().gotMessage(REQUEST_TAG)) {
-            MPIHelper::getInstance().responeRequest();
+        #pragma omp critical
+        {
+            while (MPIHelper::getInstance().isMaster() && MPIHelper::getInstance().gotMessage(REQUEST_TAG)) {
+                MPIHelper::getInstance().responeRequest();
+            }
         }
 #endif
+    }
     }
     
 #ifdef _IQTREE_MPI
@@ -505,6 +510,8 @@ bool PartitionModel::isLinkedModel() {
     return Params::getInstance().link_alpha || (linked_models.size()>0);
 }
 
+#include <omp.h>
+
 double PartitionModel::optimizeParameters(int fixed_len, bool write_info, double logl_epsilon, double gradient_epsilon) {
     PhyloSuperTree *tree = (PhyloSuperTree*)site_rate->getTree();
     double prev_tree_lh = -DBL_MAX, tree_lh = 0.0;
@@ -536,11 +543,13 @@ double PartitionModel::optimizeParameters(int fixed_len, bool write_info, double
 #ifdef _OPENMP
 #pragma omp parallel for reduction(+: tree_lh) schedule(dynamic) if(tree->num_threads > 1)
 #endif
-        for (int j = 0; j < ntrees; j++) {
+        for (int i = 0; i < 1; ++i) {
         while (true) {
             int part = -1;
 
 #ifdef _IQTREE_MPI
+
+            #pragma omp critical
             part = MPIHelper::getInstance().request();
 #else
             if (tree->proc_part_order_2.size()) {
@@ -548,10 +557,11 @@ double PartitionModel::optimizeParameters(int fixed_len, bool write_info, double
                 tree->proc_part_order_2.pop_back();
             }
 #endif
-            printf("Process %d got partition %d\n", MPIHelper::getInstance().getProcessID(), part);
+            // printf("Process %d, thread %d, part %d\n", MPIHelper::getInstance().getProcessID(), omp_get_thread_num(), part);
             if (part == -1) {
                 break;
             } else {
+                #pragma omp critical
                 tree->proc_part_order.push_back(part);
             }
 
@@ -598,13 +608,13 @@ double PartitionModel::optimizeParameters(int fixed_len, bool write_info, double
 #endif // _IQTREE_MPI
         }
         }
-
 #ifdef _IQTREE_MPI
         if (MPIHelper::getInstance().isMaster()) {
             while (numReceivedWorker < MPIHelper::getInstance().getNumProcesses() - 1) {
                 MPIHelper::getInstance().responeRequest();
             }
         }
+        printf("Process %d received all workers\n", MPIHelper::getInstance().getProcessID());
         MPI_Barrier(MPI_COMM_WORLD);
 #endif
 

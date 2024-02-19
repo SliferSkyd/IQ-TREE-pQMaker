@@ -4,8 +4,8 @@ Heiko Schmidt, Dominik Schrempf, Michael Woodhams.
 
 Host:    TURING (AVX2, FMA3, 6 GB RAM)
 Command: ./iqtree2-mpi -S ../example/output/.best_model.nex -te ../example/output/.treefile --model-joint GTR20+FO -nt 2 --model-joint GTR20+FO -redo
-Seed:    360695 (Using SPRNG - Scalable Parallel Random Number Generator)
-Time:    Mon Feb 19 12:55:24 2024
+Seed:    794669 (Using SPRNG - Scalable Parallel Random Number Generator)
+Time:    Mon Feb 19 16:04:39 2024
 Kernel:  AVX+FMA - 2 threads (2 CPU cores detected)
 MPI:     2 processes
 
@@ -356,3 +356,50 @@ Mean state frequencies: 0.03547481 0.08138002 0.05845607 0.03713680 0.03232277 0
 
 NOTE: 3 MB RAM (0 GB) is required!
 Estimate model parameters (epsilon = 0.010)
+1. Log-likelihood: -6196.661
+Optimizing linked GTR20+FO parameters across all partitions (208 free parameters)
+Linked-model log-likelihood: -6096.945
+2. Log-likelihood: -6092.173
+Optimizing linked GTR20+FO parameters across all partitions (208 free parameters)
+Linked-model log-likelihood: -5918.972
+3. Log-likelihood: -5917.247
+Optimizing linked GTR20+FO parameters across all partitions (208 free parameters)
+Linked-model log-likelihood: -5853.886
+4. Log-likelihood: -5853.577
+Optimizing linked GTR20+FO parameters across all partitions (208 free parameters)
+Linked-model log-likelihood: -5834.856
+5. Log-likelihood: -5834.788
+Optimizing linked GTR20+FO parameters across all partitions (208 free parameters)
+Linked-model log-likelihood: -5822.623
+6. Log-likelihood: -5822.531
+Optimizing linked GTR20+FO parameters across all partitions (208 free parameters)
+Linked-model log-likelihood: -5814.776
+7. Log-likelihood: -5814.595
+Optimizing linked GTR20+FO parameters across all partitions (208 free parameters)
+Linked-model log-likelihood: -5806.057
+8. Log-likelihood: -5805.976
+Optimizing linked GTR20+FO parameters across all partitions (208 free parameters)
+Linked-model log-likelihood: -5801.573
+9. Log-likelihood: -5801.519
+Optimizing linked GTR20+FO parameters across all partitions (208 free parameters)
+Linked-model log-likelihood: -5797.317
+10. Log-likelihood: -5797.282
+Optimizing linked GTR20+FO parameters across all partitions (208 free parameters)
+Linked-model log-likelihood: -5793.157
+Optimal log-likelihood: -5793.157
+Partition information was printed to ../example/output/.best_model.nex.best_model.nex
+BEST SCORE FOUND : -5793.157
+Total tree length: 5.103
+
+Total number of iterations: 0
+CPU time used for tree search: 0.000 sec (0h:0m:0s)
+Wall-clock time used for tree search: 0.000 sec (0h:0m:0s)
+Total CPU time used: 607.740 sec (0h:10m:7s)
+Total wall-clock time used: 304.606 sec (0h:5m:4s)
+
+Analysis results written to: 
+  IQ-TREE report:                ../example/output/.best_model.nex.iqtree
+  Maximum-likelihood tree:       ../example/output/.best_model.nex.treefile
+  Screen log file:               ../example/output/.best_model.nex.log
+
+Date and Time: Mon Feb 19 16:09:44 2024
