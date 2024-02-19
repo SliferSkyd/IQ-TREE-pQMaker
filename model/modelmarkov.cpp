@@ -869,7 +869,7 @@ bool ModelMarkov::getVariables(double *variables) {
 	}
 
 #ifdef _IQTREE_MPI
-    #pragma omp critical
+    
     {
         while (MPIHelper::getInstance().isMaster() && MPIHelper::getInstance().gotMessage(REQUEST_TAG)) {
             MPIHelper::getInstance().responeRequest();
@@ -906,7 +906,7 @@ bool ModelMarkov::getVariables(double *variables) {
 	}
 
 #ifdef _IQTREE_MPI
-    #pragma omp critical
+    
     {
         while (MPIHelper::getInstance().isMaster() && MPIHelper::getInstance().gotMessage(REQUEST_TAG)) {
             MPIHelper::getInstance().responeRequest();
@@ -924,7 +924,7 @@ double ModelMarkov::targetFunk(double x[]) {
 		decomposeRateMatrix();
 
 #ifdef _IQTREE_MPI
-        #pragma omp critical
+        
         {
             while (MPIHelper::getInstance().isMaster() && MPIHelper::getInstance().gotMessage(REQUEST_TAG)) {
                 MPIHelper::getInstance().responeRequest();
@@ -953,7 +953,7 @@ double ModelMarkov::targetFunk(double x[]) {
 //    }
 
 #ifdef _IQTREE_MPI
-    #pragma omp critical
+    
     {
         while (MPIHelper::getInstance().isMaster() && MPIHelper::getInstance().gotMessage(REQUEST_TAG)) {
             MPIHelper::getInstance().responeRequest();
@@ -1443,7 +1443,7 @@ void ModelMarkov::decomposeRateMatrixRev() {
     }
 
 #ifdef _IQTREE_MPI
-    #pragma omp critical
+    
     {
         while (MPIHelper::getInstance().isMaster() && MPIHelper::getInstance().gotMessage(REQUEST_TAG)) {
             MPIHelper::getInstance().responeRequest();

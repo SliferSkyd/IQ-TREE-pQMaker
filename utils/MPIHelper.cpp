@@ -289,12 +289,15 @@ vector<DoubleVector> MPIHelper::gatherAllVectors(const vector<DoubleVector> &vts
 void MPIHelper::responeRequest() {
     if (!isMaster()) return;
     if (!gotMessage(REQUEST_TAG)) return;
-    double score;
-    MPI_Status status;
-    MPI_Recv(&score, 1, MPI_DOUBLE, MPI_ANY_SOURCE, REQUEST_TAG, MPI_COMM_WORLD, &status);
-    int sender = status.MPI_SOURCE;
+    #pragma omp critical
+    {
+        double score;
+        MPI_Status status;
+        MPI_Recv(&score, 1, MPI_DOUBLE, MPI_ANY_SOURCE, REQUEST_TAG, MPI_COMM_WORLD, &status);
+        int sender = status.MPI_SOURCE;
 
-    schedule(sender);
+        schedule(sender);
+    }
 }
 
 int MPIHelper::request() {
@@ -328,7 +331,7 @@ void MPIHelper::schedule(int proc) {
     } else {
         int tree = stree->proc_part_order_2.back();
         stree->proc_part_order_2.pop_back();
-        printf("Send tree %d to process %d\n", tree, proc);
+        // printf("Send tree %d to process %d\n", tree, proc);
         MPI_Send(&tree, 1, MPI_INT, proc, SUPERTREE_TAG, MPI_COMM_WORLD);
     }
 }

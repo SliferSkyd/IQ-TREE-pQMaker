@@ -335,7 +335,7 @@ double PartitionModel::targetFunk(double x[]) {
         part_model->fixParameters(fixed);
 
 #ifdef _IQTREE_MPI
-        #pragma omp critical
+        
         {
             while (MPIHelper::getInstance().isMaster() && MPIHelper::getInstance().gotMessage(REQUEST_TAG)) {
                 MPIHelper::getInstance().responeRequest();
@@ -567,7 +567,7 @@ double PartitionModel::optimizeParameters(int fixed_len, bool write_info, double
 
 #ifdef _IQTREE_MPI
             
-            #pragma omp critical
+            
             {
                 while (MPIHelper::getInstance().isMaster() && MPIHelper::getInstance().gotMessage(REQUEST_TAG)) {
                     MPIHelper::getInstance().responeRequest();
