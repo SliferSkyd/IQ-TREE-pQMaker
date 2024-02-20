@@ -495,6 +495,9 @@ double PartitionModel::optimizeParameters(int fixed_len, bool write_info, double
             if (!Params::getInstance().opqmaker) {
                 part = tree->proc_part_order[i];
             } else {
+#ifdef _OPENMP
+#pragma omp critical
+#endif
                 part = MPIHelper::getInstance().request();
             }
 #else
@@ -507,7 +510,11 @@ double PartitionModel::optimizeParameters(int fixed_len, bool write_info, double
                 continue; // no tree to process
             } 
             
-            if (Params::getInstance().opqmaker) {
+            if (Params::getInstance().opqmaker) 
+#ifdef _OPENMP
+#pragma omp critical
+#endif
+            {
                 tree->proc_part_order.push_back(part);
 
                 if (MPIHelper::getInstance().isMaster()) {

@@ -1273,8 +1273,13 @@ double ModelFactory::optimizeParameters(int fixed_len, bool write_info,
     // ---------------------------
 
 #ifdef _IQTREE_MPI
-    if (Params::getInstance().opqmaker && MPIHelper::getInstance().isMaster()) {
-        while (MPIHelper::getInstance().gotMessage()) {
+    if (Params::getInstance().opqmaker && MPIHelper::getInstance().isMaster())
+#ifdef _OPENMP
+#pragma omp critical
+#endif
+    {
+        while (MPIHelper::getInstance().gotMessage())
+        {
             MPIHelper::getInstance().responeRequest();
         }
     }
@@ -1298,11 +1303,16 @@ double ModelFactory::optimizeParameters(int fixed_len, bool write_info,
         new_lh = optimizeParametersOnly(i, gradient_epsilon, new_lh);
 
 #ifdef _IQTREE_MPI
-        if (Params::getInstance().opqmaker && MPIHelper::getInstance().isMaster()) {
-            while (MPIHelper::getInstance().gotMessage()) {
-                MPIHelper::getInstance().responeRequest();
+        if (Params::getInstance().opqmaker && MPIHelper::getInstance().isMaster())
+#ifdef _OPENMP
+#pragma omp critical
+#endif
+            {
+                while (MPIHelper::getInstance().gotMessage())
+                {
+                    MPIHelper::getInstance().responeRequest();
+                }
             }
-        }
 #endif
 
         if (new_lh == 0.0) {
