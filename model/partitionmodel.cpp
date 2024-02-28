@@ -536,16 +536,17 @@ double PartitionModel::optimizeParameters(int fixed_len, bool write_info, double
             reverse(tree->proc_part_order_2.begin(), tree->proc_part_order_2.end());
         }
 
-// #ifdef _IQTREE_MPI
-//         MPI_Barrier(MPI_COMM_WORLD);
-// #endif
-
 #ifdef _OPENMP
 #pragma omp parallel for reduction(+: tree_lh) schedule(dynamic) if(tree->num_threads > 1)
 #endif
-        for (int i = 0; i < 1; ++i) {
-        while (true) {
-            int part = -1;
+#ifdef _IQTREE_MPI
+    for (int j = 0; j < tree->procSize(); j++) {
+        int i = tree->proc_part_order[j];
+#else
+    for (int j = 0; j < tree->size(); j++) {
+        int i = tree->part_order[j];
+#endif
+
 
 #ifdef _IQTREE_MPI
 
@@ -566,15 +567,12 @@ double PartitionModel::optimizeParameters(int fixed_len, bool write_info, double
             }
 
 #ifdef _IQTREE_MPI
-            
-            
             {
                 while (MPIHelper::getInstance().isMaster() && MPIHelper::getInstance().gotMessage(REQUEST_TAG)) {
                     MPIHelper::getInstance().responeRequest();
                 }
             }
 #endif
-
             double score;
             if (opt_gamma_invar) {
                 score = tree->at(part)->getModelFactory()->optimizeParametersGammaInvar(fixed_len,
