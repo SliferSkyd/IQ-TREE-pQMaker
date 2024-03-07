@@ -329,7 +329,7 @@ double PartitionModel::targetFunk(double x[]) {
 #endif
         {
             if (MPIHelper::getInstance().isMaster()) {
-                while (MPIHelper::getInstance().gotMessage()) {
+                while (MPIHelper::getInstance().gotMessage(REQUEST_TAG)) {
                     MPIHelper::getInstance().responeRequest();
                 }
             }
@@ -578,7 +578,7 @@ double PartitionModel::optimizeParameters(int fixed_len, bool write_info, double
                 tree->proc_part_order.push_back(part);
 
                 if (MPIHelper::getInstance().isMaster()) {
-                    while (MPIHelper::getInstance().gotMessage()) {
+                    while (MPIHelper::getInstance().gotMessage(REQUEST_TAG)) {
                         MPIHelper::getInstance().responeRequest();
                     }
                 }

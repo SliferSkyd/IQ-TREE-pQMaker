@@ -1278,8 +1278,7 @@ double ModelFactory::optimizeParameters(int fixed_len, bool write_info,
 #pragma omp critical
 #endif
     {
-        while (MPIHelper::getInstance().gotMessage())
-        {
+        while (MPIHelper::getInstance().gotMessage(REQUEST_TAG)) {
             MPIHelper::getInstance().responeRequest();
         }
     }
@@ -1308,8 +1307,7 @@ double ModelFactory::optimizeParameters(int fixed_len, bool write_info,
 #pragma omp critical
 #endif
             {
-                while (MPIHelper::getInstance().gotMessage())
-                {
+                while (MPIHelper::getInstance().gotMessage(REQUEST_TAG)) {
                     MPIHelper::getInstance().responeRequest();
                 }
             }
